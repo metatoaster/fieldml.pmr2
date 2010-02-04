@@ -1,0 +1,10 @@
+<h3>CMGui Viewer</h3>
+<p><a tal:attributes="href view/note/launcher">Run full sized</a></p>
+<object style="width: 100%; height: 40em;"
+  tal:attributes="data view/note/launcher"
+  tal:condition="nothing"
+  ></object>
+<iframe style="width: 100%; height: 40em;"
+  tal:attributes="src view/note/launcher"
+  tal:condition="not:nothing"
+  ></iframe>

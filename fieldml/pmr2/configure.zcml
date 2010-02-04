@@ -1,0 +1,32 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="pmr2">
+
+  <!-- Note storage -->
+
+  <adapter
+      for="pmr2.app.content.interfaces.IExposureFile"
+      factory=".CMGuiViewerNoteFactory"
+      provides="fieldml.pmr2.interfaces.ICMGuiViewerNote"
+      name="cmgui_viewer"
+      />
+
+  <!-- Note Generation -->
+
+  <utility
+      name="cmgui_viewer"
+      component=".annotator.CMGuiViewerAnnotatorFactory"
+      provides="pmr2.app.annotation.interfaces.IExposureFileAnnotator"
+      />
+
+  <!-- Browser pages -->
+
+  <browser:page
+      for="pmr2.app.content.ExposureFile"
+      name="cmgui_viewer"
+      class=".browser.CMGuiViewerView"
+      permission="zope2.View"
+      />
+
+</configure>
