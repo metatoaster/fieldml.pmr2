@@ -1,0 +1,25 @@
+Metadata-Version: 1.0
+Name: fieldml.pmr2
+Version: trunkdev
+Summary: FieldML plugin for PMR2
+Home-page: http://physiome.org.nz/
+Author: Tommy Yu
+Author-email: tommy.yu@auckland.ac.nz
+License: GPL
+Description: Introduction
+        ============
+        
+        
+        
+        Changelog
+        =========
+        
+        trunk - Unreleased
+        ----------------
+        
+        * Initial release
+        
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development :: Libraries :: Python Modules

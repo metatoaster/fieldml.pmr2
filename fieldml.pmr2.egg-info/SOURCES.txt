@@ -1,0 +1,13 @@
+README.txt
+setup.cfg
+setup.py
+fieldml/__init__.py
+fieldml.pmr2.egg-info/PKG-INFO
+fieldml.pmr2.egg-info/SOURCES.txt
+fieldml.pmr2.egg-info/dependency_links.txt
+fieldml.pmr2.egg-info/entry_points.txt
+fieldml.pmr2.egg-info/namespace_packages.txt
+fieldml.pmr2.egg-info/not-zip-safe
+fieldml.pmr2.egg-info/requires.txt
+fieldml.pmr2.egg-info/top_level.txt
+fieldml/pmr2/__init__.py
