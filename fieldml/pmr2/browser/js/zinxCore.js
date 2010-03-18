@@ -31,29 +31,36 @@ function ZinxDownloadManager() {
     this.load = function() {
         for(i in this._objects){
             var object = this._objects[i];
-            object.load(this._dm);
+            if (object.class == 'Model') {
+                object.load(this._dm);
+            }
         }
     }
 
     /** Renders the models once they are downloaded. */
     this._read = function(objects) {
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        var model = null;
+
         for(i in objects){
             var object = objects[i];
-            console.debug("Rendering model "+object.id+" through download manager");
-            object.render();
-        }
-        
-        var project = object.project;
-        if(object.class == 'Model'){
-            project.LoadZincScene(project); // Load the 3D scene once the objects are loaded.
-        
-            if(!isDefined(project.Views[0])){
-                project.addView();
-            }else{
-                project.Views[project.defaultView].initialiseView();
+            if (object.class == 'Model') {
+                model = object;
+                console.debug("Rendering model "+object.id+" through download manager");
+                object.render();
             }
         }
+        
+        var project = model.project;
+
+        project.LoadZincScene(project); // Load the 3D scene once the objects are loaded.
+    
+        if(!isDefined(project.Views[0])){
+            project.addView();
+        }else{
+            project.Views[project.defaultView].initialiseView();
+        }
+
     }
 
     /** The zinc download manager. */
@@ -2360,14 +2367,11 @@ function parseIsoValues(def){
 
 }
 
-// Checks if the Firebug consile is available
-if(typeof(console)=='undefined'){
-    var console = {
-            log: function() { },
-            info: function() { },
-            debug: function() { },
-            warn: function() { },
-            error: function(msg) { }
-    };
-    
-}
+// Indiscriminately override console.
+var console = {
+        log: function() { },
+        info: function() { },
+        debug: function() { },
+        warn: function() { },
+        error: function(msg) { }
+};
