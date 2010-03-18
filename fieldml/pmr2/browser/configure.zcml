@@ -3,11 +3,25 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="pmr2">
 
+  <adapter factory=".layout.zinc_layout_factory" />
+
   <browser:page
       for="pmr2.app.content.ExposureFile"
       name="cmgui_viewer"
       class=".view.CMGuiViewerView"
       permission="zope2.View"
+      />
+
+  <browser:page
+      for="pmr2.app.content.ExposureFile"
+      name="zinc_viewer"
+      class=".view.ZincViewerView"
+      permission="zope2.View"
+      />
+
+  <browser:resourceDirectory
+      name="fieldml.pmr2.js"
+      directory="js"
       />
 
 </configure>
