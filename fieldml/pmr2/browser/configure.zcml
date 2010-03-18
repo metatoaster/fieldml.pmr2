@@ -1,0 +1,13 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="pmr2">
+
+  <browser:page
+      for="pmr2.app.content.ExposureFile"
+      name="cmgui_viewer"
+      class=".view.CMGuiViewerView"
+      permission="zope2.View"
+      />
+
+</configure>

@@ -3,6 +3,8 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="pmr2">
 
+  <include package=".browser"/>
+
   <!-- Note storage -->
 
   <adapter
@@ -18,15 +20,6 @@
       name="cmgui_viewer"
       component=".annotator.CMGuiViewerAnnotatorFactory"
       provides="pmr2.app.annotation.interfaces.IExposureFileAnnotator"
-      />
-
-  <!-- Browser pages -->
-
-  <browser:page
-      for="pmr2.app.content.ExposureFile"
-      name="cmgui_viewer"
-      class=".browser.CMGuiViewerView"
-      permission="zope2.View"
       />
 
 </configure>
