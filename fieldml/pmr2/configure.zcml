@@ -9,16 +9,16 @@
 
   <adapter
       for="pmr2.app.content.interfaces.IExposureFile"
-      factory=".CMGuiViewerNoteFactory"
-      provides="fieldml.pmr2.interfaces.ICMGuiViewerNote"
-      name="cmgui_viewer"
+      factory=".ZincViewerNoteFactory"
+      provides="fieldml.pmr2.interfaces.IZincViewerNote"
+      name="zinc_viewer"
       />
 
   <!-- Note Generation -->
 
   <utility
-      name="cmgui_viewer"
-      component=".annotator.CMGuiViewerAnnotatorFactory"
+      name="zinc_viewer"
+      component=".annotator.ZincViewerAnnotatorFactory"
       provides="pmr2.app.annotation.interfaces.IExposureFileAnnotator"
       />
 

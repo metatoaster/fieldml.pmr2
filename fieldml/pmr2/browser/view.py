@@ -8,16 +8,6 @@ from pmr2.app.browser.layout import PlainLayoutWrapper
 from fieldml.pmr2.browser.layout import ZincLayoutWrapper
 
 
-class CMGuiViewer(ExposureFileViewBase):
-    """\
-    Wraps an object around the CMGui viewer.
-    """
-
-    template = ViewPageTemplateFile('cmgui_viewer.pt')
-
-CMGuiViewerView = layout.wrap_form(CMGuiViewer, __wrapper_class=PlainLayoutWrapper)
-
-
 class ZincViewer(ExposureFileViewBase):
     """\
     Wraps an object around the Zinc viewer.

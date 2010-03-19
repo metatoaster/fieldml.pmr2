@@ -1,10 +1,9 @@
-        <!-- Define buttons for testing functionality - the JS function can be called directly depending on what model the user selects -->
-        <button onClick="showModel([ 'http://cmiss.bioeng.auckland.ac.nz/development/examples/a/a2/cmiss_input/cube.exelem', 'http://cmiss.bioeng.auckland.ac.nz/development/examples/a/a2/cmiss_input/cube.exnode' ]);" >Show Model</button>
-        <button onClick="hideModels();">Hide Model</button>
-        <button onClick="replaceModel([ 'http://cmiss.bioeng.auckland.ac.nz/development/examples/a/a2/cmiss_input/cube.exelem', 'http://cmiss.bioeng.auckland.ac.nz/development/examples/a/a2/cmiss_input/cube.exnode' ]);">Replace Model</button>
-
-
-        <!-- Zinc Plugin object defined here. -->
-        <div style="position:relative; z-index: 0">
-            <object id="zinc_plugin" type="application/x-zinc-plugin" width="200" height="200"></object>
-        </div>
+<div id="zinc">
+    <object id="zinc_plugin" type="application/x-zinc-plugin">
+      <param name="exelem" tal:attributes="value view/note/exelem"/>
+      <param name="exnode" tal:attributes="value view/note/exnode"/>
+      To view this model, please install the
+      <a href="https://addons.mozilla.org/en-US/firefox/addon/5764">Zinc 
+      Add-on for Firefox</a>.
+    </object>
+</div>

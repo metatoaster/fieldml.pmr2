@@ -5,6 +5,15 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       metal:use-macro="context/main_template/macros/master">
 
+<metal:slot metal:fill-slot="css_slot"
+    i18n:domain="pmr2.annotation.shjs">
+
+  <style type="text/css"
+      tal:content="string:@import url($portal_url/++resource++fieldml.pmr2.css/zinc.css);">
+  </style>
+
+</metal:slot>
+
 <metal:slot metal:fill-slot="javascript_head_slot" 
     i18n:domain="fieldml.pmr2">
 
@@ -22,16 +31,13 @@
 
   <script type="text/javascript">
   //<![CDATA[
-  // This function is optional: It allows you to perform actions on the Zinc plug-in after it has been initialized.                   
+  function onZincReady() {
+      var fileNames = [ 
+          jq('#zinc_plugin param[name=exelem]')[0].value,
+          jq('#zinc_plugin param[name=exnode]')[0].value
+      ]
+      showModel(fileNames);
 
-  function onZincReady(){
-      // Change the materials if you want to here - options are default, black, blue, bone, gold, gray, green, muscle, red, silver, tissue and white.
-      window.zincSurfaceMaterial = 'blue';
-      window.zincLineMaterial = 'gold';
-  
-      // Render the first model in the zinc plugin on start up.
-      var fileNames = [ 'http://cmiss.bioeng.auckland.ac.nz/development/examples/a/a2/cmiss_input/cube.exelem', 'http://cmiss.bioeng.auckland.ac.nz/development/examples/a/a2/cmiss_input/cube.exnode' ];
-      showModel(fileNames);    
   }
   //]]>
   </script>
@@ -42,9 +48,10 @@
 
 <metal:slot metal:fill-slot="main" i18n:domain="cmf_default">
   <div id="layout-contents">
+    <h1>Zinc Viewer</h1>
     <span tal:replace="structure view/contents" />
   </div>
 </metal:slot>
-</body>
 
+</body>
 </html>

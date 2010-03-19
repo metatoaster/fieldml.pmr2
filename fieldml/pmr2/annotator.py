@@ -6,13 +6,13 @@ from pmr2.app.annotation.interfaces import *
 from pmr2.app.annotation.annotator import ExposureFileAnnotatorBase
 
 
-class CMGuiViewerAnnotator(ExposureFileAnnotatorBase):
+class ZincViewerAnnotator(ExposureFileAnnotatorBase):
     zope.interface.implements(IExposureFileAnnotator)
-    title = u'CMGui Viewer'
-    label = u'CMGui Viewer'
+    title = u'Zinc Viewer'
+    label = u'Zinc Viewer'
 
     def generate(self):
         return ()
 
-CMGuiViewerAnnotatorFactory = named_factory(CMGuiViewerAnnotator)
+ZincViewerAnnotatorFactory = named_factory(ZincViewerAnnotator)
 
