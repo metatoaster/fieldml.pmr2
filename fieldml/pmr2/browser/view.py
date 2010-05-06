@@ -15,4 +15,18 @@ class ZincViewer(ExposureFileViewBase):
 
     template = ViewPageTemplateFile('zinc_content.pt')
 
+    def _getPath(self, filename):
+        uri = self.context.absolute_url()
+        # take the "dirname" of the context and apply the path in place.
+        path, id_ = uri.rsplit('/', 1)
+        return '/'.join([path, filename])
+
+    @property
+    def exnode(self):
+        return self._getPath(self.note.exnode)
+
+    @property
+    def exelem(self):
+        return self._getPath(self.note.exelem)
+
 ZincViewerView = layout.wrap_form(ZincViewer, __wrapper_class=ZincLayoutWrapper)

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fieldml 
+    xmlns="http://www.physiome.org.nz/fieldml/0.1#" 
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:vCard="http://www.w3.org/2001/vcard-rdf/3.0#"
+    xmlns:pmr2="http://namespace.physiomeproject.org/pmr2#"
+    xmlns:pmr2_note="http://namespace.physiomeproject.org/pmr2/note#"
+    xmlns:fieldml="http://www.physiome.org.nz/fieldml/0.1#"> 
+  <rdf:RDF>
+    <rdf:Description rdf:about="">
+      <dc:title>Body Mesh</dc:title>
+      <dc:creator>Auckland Bioengineering Institute</dc:creator>
+      <pmr2:annotation rdf:parseType="Resource">
+        <pmr2:type 
+            rdf:resource="http://namespace.physiomeproject.org/pmr2/note#zinc_viewer"/>
+        <pmr2:fields>
+          <rdf:Bag>
+            <rdf:li rdf:parseType="Resource">
+              <pmr2:field rdf:parseType="Resource">
+                <pmr2:key>exelem</pmr2:key>
+                <pmr2:value>body.exelem</pmr2:value>
+              </pmr2:field>
+            </rdf:li>
+            <rdf:li rdf:parseType="Resource">
+              <pmr2:field rdf:parseType="Resource">
+                <pmr2:key>exnode</pmr2:key>
+                <pmr2:value>body.exnode</pmr2:value>
+              </pmr2:field>
+            </rdf:li>
+          </rdf:Bag>
+        </pmr2:fields>
+      </pmr2:annotation>
+    </rdf:Description>
+  </rdf:RDF>
+</fieldml>

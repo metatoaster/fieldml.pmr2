@@ -1,7 +1,7 @@
 <div id="zinc">
     <object id="zinc_plugin" type="application/x-zinc-plugin">
-      <param name="exelem" tal:attributes="value view/note/exelem"/>
-      <param name="exnode" tal:attributes="value view/note/exnode"/>
+      <param name="exelem" tal:attributes="value view/exelem"/>
+      <param name="exnode" tal:attributes="value view/exnode"/>
       To view this model, please install the
       <a href="https://addons.mozilla.org/en-US/firefox/addon/5764">Zinc 
       Add-on for Firefox</a>.

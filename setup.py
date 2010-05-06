@@ -25,6 +25,7 @@ setup(name='fieldml.pmr2',
       install_requires=[
           'setuptools',
           # -*- Extra requirements: -*-
+          'pmr2.rdf',
       ],
       entry_points="""
       # -*- Entry points: -*-
