@@ -1,6 +1,6 @@
 import rdflib
 
-from pmr2.rdf.base import RdfXmlObject
+from pmr2.rdf.base import RdfXmlMetadata
 
 namespaces = {
     'dc': 'http://purl.org/dc/elements/1.1/',
@@ -12,21 +12,5 @@ namespaces = {
 }
 
 
-class RdfExposureNoteHelper(RdfXmlObject):
-
-    def queryNote(self, name):
-        subject = namespaces['pmr2note'] + name
-        bindings = {
-            rdflib.Variable('?subject'): rdflib.URIRef(subject),
-        }
-        q = """\
-        SELECT ?key ?value WHERE {
-            ?node pmr2:type ?subject .
-            ?node pmr2:fields [ ?li ?fnode ] .
-            ?fnode pmr2:field [ pmr2:key ?key ] .
-            ?fnode pmr2:field [ pmr2:value ?value ] .
-        }
-        """
-        results = self.query(q, bindings, namespaces)
-        return [(i[0].strip(), i[1].strip()) for i in results]
-
+class RdfExposureNoteHelper(RdfXmlMetadata):
+    pass

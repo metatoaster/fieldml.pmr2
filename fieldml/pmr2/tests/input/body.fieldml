@@ -11,6 +11,7 @@
     <rdf:Description rdf:about="">
       <dc:title>Body Mesh</dc:title>
       <dc:creator>Auckland Bioengineering Institute</dc:creator>
+      <dc:description>Simple Body Mesh</dc:description>
       <pmr2:annotation rdf:parseType="Resource">
         <pmr2:type 
             rdf:resource="http://namespace.physiomeproject.org/pmr2/note#zinc_viewer"/>

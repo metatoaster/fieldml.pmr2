@@ -59,7 +59,7 @@ class TestZincViewerAnnotator(TestCase):
     def tearDown(self):
         pass
 
-    def test_000_basic(self):
+    def test_0000_zinc_viewer_basic(self):
         annotator = ZincViewerAnnotator(self.context)
         # must assign the name like how this would have generated via
         # adapter.
