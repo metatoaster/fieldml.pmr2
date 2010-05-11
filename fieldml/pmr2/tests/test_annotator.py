@@ -13,6 +13,7 @@ from pmr2.app.content import ExposureContainer, Exposure
 from pmr2.app.tests.base import TestRequest, ExposureDocTestCase
 
 from fieldml.pmr2.annotator import ZincViewerAnnotator
+from fieldml.pmr2.annotator import FieldMLMetadataAnnotator
 
 
 class MockWorkspace:
@@ -69,6 +70,16 @@ class TestZincViewerAnnotator(TestCase):
             u'exnode': u'body.exnode',
             u'exelem': u'body.exelem',
         }
+        self.assertEqual(answer, results)
+
+    def test_0100_metadata_basic(self):
+        annotator = FieldMLMetadataAnnotator(self.context)
+        results = annotator.generate()
+        answer = (
+            ('title', u'Body Mesh'),
+            ('creator', u'Auckland Bioengineering Institute'),
+            ('description', u'Simple Body Mesh'),
+        )
         self.assertEqual(answer, results)
 
 def test_suite():

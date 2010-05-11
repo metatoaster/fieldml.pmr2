@@ -12,6 +12,13 @@
       permission="zope2.View"
       />
 
+  <browser:page
+      for="pmr2.app.content.ExposureFile"
+      name="fieldml_metadata"
+      class=".view.FieldMLMetadataView"
+      permission="zope2.View"
+      />
+
   <browser:resourceDirectory
       name="fieldml.pmr2.css"
       directory="css"

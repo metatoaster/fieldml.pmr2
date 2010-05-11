@@ -1,0 +1,11 @@
+<h1>Model Metadata</h1>
+
+<h3>Model Authorship</h3>
+<dl>
+<dt>Title:</dt>
+<dd tal:content="view/note/title"/>
+<dt>Author:</dt>
+<dd tal:content="view/note/creator"/>
+<dt>Description:</dt>
+<dd tal:content="view/note/description"/>
+</dl>

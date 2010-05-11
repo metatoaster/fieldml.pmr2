@@ -15,3 +15,14 @@ class ZincViewerNote(ExposureFileNoteBase):
     zope.interface.implements(IZincViewerNote)
     exnode = fieldproperty.FieldProperty(IZincViewerNote['exnode'])
     exelem = fieldproperty.FieldProperty(IZincViewerNote['exelem'])
+
+
+class FieldMLMetadataNote(ExposureFileNoteBase):
+    """\
+    Points to the OpenCell session attached to this file.
+    """
+
+    zope.interface.implements(IFieldMLMetadataNote)
+    title = fieldproperty.FieldProperty(IFieldMLMetadataNote['title'])
+    creator = fieldproperty.FieldProperty(IFieldMLMetadataNote['creator'])
+    description = fieldproperty.FieldProperty(IFieldMLMetadataNote['description'])

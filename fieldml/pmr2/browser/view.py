@@ -30,3 +30,13 @@ class ZincViewer(ExposureFileViewBase):
         return self._getPath(self.note.exelem)
 
 ZincViewerView = layout.wrap_form(ZincViewer, __wrapper_class=ZincLayoutWrapper)
+
+
+class FieldMLMetadata(ExposureFileViewBase):
+    """\
+    Wraps an object around the Zinc viewer.
+    """
+
+    template = ViewPageTemplateFile('fieldml_metadata.pt')
+
+FieldMLMetadataView = layout.wrap_form(FieldMLMetadata)

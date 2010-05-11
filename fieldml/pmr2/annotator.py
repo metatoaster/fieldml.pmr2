@@ -22,3 +22,22 @@ class ZincViewerAnnotator(ExposureFileAnnotatorBase):
 
 ZincViewerAnnotatorFactory = named_factory(ZincViewerAnnotator)
 
+
+class FieldMLMetadataAnnotator(ExposureFileAnnotatorBase):
+    zope.interface.implements(IExposureFileAnnotator)
+    for_interface = IFieldMLMetadataNote
+    title = u'FieldML Metadata'
+    label = u'FieldML Metadata'
+
+    def generate(self):
+        helper = RdfExposureNoteHelper()
+        helper.parse(self.input)
+        result = helper.queryDC('')
+        if not result:
+            return ()
+
+        # XXX not handling multiple results
+        # take first element, strip off namespaces
+        return tuple([(k[3:], v) for k, v in result[0]])
+
+FieldMLMetadataAnnotatorFactory = named_factory(FieldMLMetadataAnnotator)
