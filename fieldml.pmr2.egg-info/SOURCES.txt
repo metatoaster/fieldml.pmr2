@@ -21,6 +21,7 @@ fieldml/pmr2/rdf.py
 fieldml/pmr2/browser/__init__.py
 fieldml/pmr2/browser/cmgui_viewer.pt
 fieldml/pmr2/browser/configure.zcml
+fieldml/pmr2/browser/fieldml_metadata.pt
 fieldml/pmr2/browser/layout.py
 fieldml/pmr2/browser/view.py
 fieldml/pmr2/browser/zinc_content.pt
