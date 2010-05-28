@@ -82,6 +82,17 @@ class TestZincViewerAnnotator(TestCase):
         )
         self.assertEqual(answer, results)
 
+    def test_0101_metadata_multiple_creator(self):
+        context = MockExposureObject('body2.fieldml')
+        annotator = FieldMLMetadataAnnotator(context)
+        results = annotator.generate()
+        answer = (
+            ('title', u'Body Mesh'),
+            ('creator', u'Creator1, Creator2'),
+            ('description', u'Simple Body Mesh'),
+        )
+        self.assertEqual(answer, results)
+
 def test_suite():
     suite = TestSuite()
     suite.addTest(makeSuite(TestZincViewerAnnotator))
