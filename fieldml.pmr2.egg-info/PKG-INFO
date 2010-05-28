@@ -14,11 +14,12 @@ Description: Introduction
         Changelog
         =========
         
-        trunk - Unreleased
+        0.1 - Unreleased
         ----------------
         
-        * Initial release
-        
+        * Basic support for the Zinc Viewer via Zinx.
+        * Does not actually support/use FieldML yet as the specification has not
+        been finalized.  The files supported are just RDF specific to PMR2.
         
 Platform: UNKNOWN
 Classifier: Programming Language :: Python
