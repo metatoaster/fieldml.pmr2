@@ -8,4 +8,8 @@
 <dd tal:content="view/note/creator"/>
 <dt>Description:</dt>
 <dd tal:content="view/note/description"/>
+<dt>Citation:</dt>
+<dd tal:content="view/note/citation"/>
+<dt>Citation ID:</dt>
+<dd tal:content="view/note/partof"/>
 </dl>

@@ -26,10 +26,12 @@ class RdfExposureNoteHelper(RdfXmlMetadata):
             rdflib.Variable('?type'): rdflib.URIRef(subject),
         }
         q = """\
-        SELECT ?title ?creator ?description WHERE {
+        SELECT ?title ?creator ?description ?citation ?ispartof WHERE {
             ?subject dc:title ?title .
             OPTIONAL { ?subject dc:creator ?creator . }
             OPTIONAL { ?subject dc:description ?description . }
+            OPTIONAL { ?subject dcterms:bibliographicCitation ?citation . }
+            OPTIONAL { ?subject dcterms:isPartOf ?ispartof . }
         }
         """
 
@@ -53,5 +55,5 @@ class RdfExposureNoteHelper(RdfXmlMetadata):
             result[1] = ', '.join(
                 [i.strip() for i in creators if isinstance(i, rdflib.Literal)])
 
-        keys = ('dc:title', 'dc:creator', 'dc:description')
+        keys = ('title', 'creator', 'description', 'citation', 'partof')
         return tuple(zip(keys, [j and j.strip() for j in result]))

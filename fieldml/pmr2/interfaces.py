@@ -34,6 +34,18 @@ class IFieldMLMetadataNote(zope.interface.Interface):
         required=False,
     )
 
+    citation = zope.schema.TextLine(
+        title=u'Citation',
+        description=u'The citation source of this work.',
+        required=False,
+    )
+
+    ispartof = zope.schema.TextLine(
+        title=u'Citation Identifier',
+        description=u'Identifier of the citation.',
+        required=False,
+    )
+
     description = zope.schema.TextLine(
         title=u'Description',
         description=u'Description of the model.',

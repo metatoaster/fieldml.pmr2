@@ -79,6 +79,8 @@ class TestZincViewerAnnotator(TestCase):
             ('title', u'Body Mesh'),
             ('creator', u'Auckland Bioengineering Institute'),
             ('description', u'Simple Body Mesh'),
+            ('citation', None),
+            ('partof', None),
         )
         self.assertEqual(answer, results)
 
@@ -90,6 +92,8 @@ class TestZincViewerAnnotator(TestCase):
             ('title', u'Body Mesh'),
             ('creator', u'Creator1, Creator2'),
             ('description', u'Simple Body Mesh'),
+            ('citation', u'Cited Work(1)'),
+            ('partof', u'urn:example:body_mesh'),
         )
         self.assertEqual(answer, results)
 
