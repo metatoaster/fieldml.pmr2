@@ -47,6 +47,7 @@ class RdfExposureNoteHelper(RdfXmlMetadata):
             SELECT ?value WHERE {
                 ?node ?li ?value .
             }
+            ORDER BY ?li
             """
             creators = self.query(q, bindings, self.namespaces).selected
             result[1] = ', '.join(
