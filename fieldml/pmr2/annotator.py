@@ -38,6 +38,6 @@ class FieldMLMetadataAnnotator(ExposureFileAnnotatorBase):
 
         # XXX not handling multiple results
         # take first element, strip off namespaces
-        return tuple([(k[3:], v) for k, v in result])
+        return tuple(result)
 
 FieldMLMetadataAnnotatorFactory = named_factory(FieldMLMetadataAnnotator)
