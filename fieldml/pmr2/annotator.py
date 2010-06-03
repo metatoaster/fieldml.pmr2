@@ -32,12 +32,12 @@ class FieldMLMetadataAnnotator(ExposureFileAnnotatorBase):
     def generate(self):
         helper = RdfExposureNoteHelper()
         helper.parse(self.input)
-        result = helper.queryDC('')
+        result = helper.querySingleDC('')
         if not result:
             return ()
 
         # XXX not handling multiple results
         # take first element, strip off namespaces
-        return tuple([(k[3:], v) for k, v in result[0]])
+        return tuple([(k[3:], v) for k, v in result])
 
 FieldMLMetadataAnnotatorFactory = named_factory(FieldMLMetadataAnnotator)

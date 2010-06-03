@@ -32,3 +32,4 @@ fieldml/pmr2/browser/js/zinxCore.js
 fieldml/pmr2/tests/__init__.py
 fieldml/pmr2/tests/test_annotator.py
 fieldml/pmr2/tests/input/body.fieldml
+fieldml/pmr2/tests/input/body2.fieldml
