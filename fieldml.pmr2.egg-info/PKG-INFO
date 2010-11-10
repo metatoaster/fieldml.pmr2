@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: fieldml.pmr2
-Version: 0.1rc2
+Version: 0.1
 Summary: FieldML plugin for PMR2
 Home-page: http://physiome.org.nz/
 Author: Tommy Yu
@@ -14,7 +14,7 @@ Description: Introduction
         Changelog
         =========
         
-        0.1 - Unreleased
+        0.1 - 2010-06-21
         ----------------
         
         * Basic support for the Zinc Viewer via Zinx.
