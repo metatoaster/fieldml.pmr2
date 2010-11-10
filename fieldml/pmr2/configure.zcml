@@ -8,14 +8,14 @@
   <!-- Note storage -->
 
   <adapter
-      for="pmr2.app.content.interfaces.IExposureFile"
+      for="pmr2.app.exposure.interfaces.IExposureFile"
       factory=".ZincViewerNoteFactory"
       provides="fieldml.pmr2.interfaces.IZincViewerNote"
       name="zinc_viewer"
       />
 
   <adapter
-      for="pmr2.app.content.interfaces.IExposureFile"
+      for="pmr2.app.exposure.interfaces.IExposureFile"
       factory=".FieldMLMetadataNoteFactory"
       provides="fieldml.pmr2.interfaces.IFieldMLMetadataNote"
       name="fieldml_metadata"
