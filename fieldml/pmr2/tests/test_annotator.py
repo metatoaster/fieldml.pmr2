@@ -14,6 +14,7 @@ from pmr2.app.tests.base import TestRequest
 from pmr2.app.exposure.tests.base import ExposureDocTestCase
 
 from fieldml.pmr2.annotator import ZincViewerAnnotator
+from fieldml.pmr2.annotator import JsonZincViewerAnnotator
 from fieldml.pmr2.annotator import FieldMLMetadataAnnotator
 
 
@@ -70,6 +71,17 @@ class TestZincViewerAnnotator(TestCase):
         answer = {
             u'exnode': u'body.exnode',
             u'exelem': u'body.exelem',
+        }
+        self.assertEqual(answer, results)
+
+    def test_0010_json_zinc_viewer_basic(self):
+        annotator = JsonZincViewerAnnotator(self.context)
+        # must assign the name like how this would have generated via
+        # adapter.
+        annotator.__name__ = 'json_zinc_viewer'
+        results = dict(annotator.generate())
+        answer = {
+            u'json': u'body.json',
         }
         self.assertEqual(answer, results)
 

@@ -18,6 +18,18 @@ class IZincViewerNote(zope.interface.Interface):
     )
 
 
+class IJsonZincViewerNote(zope.interface.Interface):
+    """\
+    Zinx JSON viewer note.
+    """
+
+    json = zope.schema.TextLine(
+        title=u'Json file',
+        description=u'The json file that will initiate the viewer for '
+                     'this model.',
+    )
+
+
 class IFieldMLMetadataNote(zope.interface.Interface):
     """\
     FieldML Metadata note.

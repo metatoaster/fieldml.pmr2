@@ -22,24 +22,11 @@
   </script>
 
   <script type="text/javascript"
-      tal:attributes="src string:$portal_url/++resource++fieldml.pmr2.js/zinxCore.js">
+      tal:attributes="src string:$portal_url/++resource++fieldml.pmr2.js/zinx.js">
   </script>
 
   <script type="text/javascript"
-      tal:attributes="src string:$portal_url/++resource++fieldml.pmr2.js/zincInterface.js">
-  </script>
-
-  <script type="text/javascript">
-  //<![CDATA[
-  function onZincReady() {
-      var fileNames = [ 
-          jq('#zinc_plugin param[name=exelem]')[0].value,
-          jq('#zinc_plugin param[name=exnode]')[0].value
-      ]
-      showModel(fileNames);
-
-  }
-  //]]>
+      tal:attributes="src string:$portal_url/++resource++fieldml.pmr2.js/model.js">
   </script>
 
 </metal:slot>

@@ -4,11 +4,19 @@
     i18n_domain="pmr2">
 
   <adapter factory=".layout.zinc_layout_factory" />
+  <adapter factory=".layout.json_zinc_layout_factory" />
 
   <browser:page
       for="pmr2.app.exposure.interfaces.IExposureFile"
       name="zinc_viewer"
       class=".view.ZincViewerView"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      for="pmr2.app.exposure.interfaces.IExposureFile"
+      name="json_zinc_viewer"
+      class=".view.JsonZincViewerView"
       permission="zope2.View"
       />
 

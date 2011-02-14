@@ -16,6 +16,13 @@
 
   <adapter
       for="pmr2.app.exposure.interfaces.IExposureFile"
+      factory=".JsonZincViewerNoteFactory"
+      provides="fieldml.pmr2.interfaces.IJsonZincViewerNote"
+      name="json_zinc_viewer"
+      />
+
+  <adapter
+      for="pmr2.app.exposure.interfaces.IExposureFile"
       factory=".FieldMLMetadataNoteFactory"
       provides="fieldml.pmr2.interfaces.IFieldMLMetadataNote"
       name="fieldml_metadata"
@@ -26,6 +33,12 @@
   <utility
       name="zinc_viewer"
       component=".annotator.ZincViewerAnnotatorFactory"
+      provides="pmr2.app.annotation.interfaces.IExposureFileAnnotator"
+      />
+
+  <utility
+      name="json_zinc_viewer"
+      component=".annotator.JsonZincViewerAnnotatorFactory"
       provides="pmr2.app.annotation.interfaces.IExposureFileAnnotator"
       />
 

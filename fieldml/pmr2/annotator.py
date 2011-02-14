@@ -12,7 +12,7 @@ from fieldml.pmr2.rdf import RdfExposureNoteHelper
 class ZincViewerAnnotator(ExposureFileAnnotatorBase):
     zope.interface.implements(IExposureFileAnnotator)
     for_interface = IZincViewerNote
-    title = u'Zinc Viewer'
+    title = u'Zinc Viewer (Original)'
     label = u'Zinc Viewer'
 
     def generate(self):
@@ -21,6 +21,20 @@ class ZincViewerAnnotator(ExposureFileAnnotatorBase):
         return helper.queryEFNote(self.__name__)
 
 ZincViewerAnnotatorFactory = named_factory(ZincViewerAnnotator)
+
+
+class JsonZincViewerAnnotator(ExposureFileAnnotatorBase):
+    zope.interface.implements(IExposureFileAnnotator)
+    for_interface = IJsonZincViewerNote
+    title = u'Zinc Viewer (JSON)'
+    label = u'Zinc Viewer'
+
+    def generate(self):
+        helper = RdfExposureNoteHelper()
+        helper.parse(self.input)
+        return helper.queryEFNote(self.__name__)
+
+JsonZincViewerAnnotatorFactory = named_factory(JsonZincViewerAnnotator)
 
 
 class FieldMLMetadataAnnotator(ExposureFileAnnotatorBase):
