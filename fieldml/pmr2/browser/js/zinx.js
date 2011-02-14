@@ -1808,7 +1808,6 @@ ZinxView.prototype.setView = function() {
 ZinxView.prototype.viewAll = function() {
     
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-	alert("viewAll");
     window.sceneViewer.viewAll();
 
 }
