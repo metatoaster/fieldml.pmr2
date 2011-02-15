@@ -1,8 +1,7 @@
-$(document).ready(function() {
+jq(document).ready(function() {
     
     // Start New Zinx Project
     window.zinxProject = new ZinxProject();
-    window.zinxProject.path = '/home/mwu035/pmr2_zinx/modified';
     window.zinxProject.SceneObjectId = 'zinc_plugin'; // the html object you put the zinc scene in.
     window.zinxProject.InitialiseZinc(); // Runs zinx.
 });
@@ -12,14 +11,14 @@ $(document).ready(function() {
 // ==========================================================================================================
 
 function ZincReadyFunction(){ // when zinc is loaded/initialised, this function is run.
-    load_simulation("simulation.json")
+    jsonfile = jq('#zinc_plugin param[name=json]')[0].value;
+    load_simulation(jsonfile);
     return;
 }
 
 function ZincSceneReadyFunction(){ // once the models are loaded and scene rendered, this function is called.
     //setTimeout('window.zinxProject.setTransparencyMode(\'order_independent\')', 500);
     //gfx('gfx define faces egroup model1');
-	alert("temp");
     setTimeout('window.zinxProject.Views[0].viewAll();', 10);
     return;
 }
@@ -50,9 +49,11 @@ function generateModels(){
     
     // Add groups to #accordian-graphics
     for(i in sim.Groups){
-        $("#accordion-graphics").append('<h3><a href="#">'+sim.Groups[i]+' <span class="show_all graphics_button" >Show</span> <span class="hide_all graphics_button">Hide</span></a></h3>')
-        $("#accordion-graphics").append('<div id="graphics-'+sim.Groups[i].toLowerCase()+'"></div>')
+        jq("#accordion-graphics").append('<h3><a href="#">'+sim.Groups[i]+' <span class="show_all graphics_button" >Show</span> <span class="hide_all graphics_button">Hide</span></a></h3>')
+        jq("#accordion-graphics").append('<div id="graphics-'+sim.Groups[i].toLowerCase()+'"></div>')
     }
+
+    base = jq('base').attr('href').replace(/[^\/]*$/, '');
     
     for(nm=0;nm<sim.Models.length;nm++){
         model = window.zinxProject.addModel();
@@ -64,7 +65,7 @@ function generateModels(){
         
         for(nf=0;nf<sim.Models[nm].files.length;nf++){
     //        model.addFile(sim.id+"/"+sim.Models[nm].files[nf]);
-				model.addFile(sim.Models[nm].files[nf]);
+            model.addFile(base + sim.Models[nm].files[nf]);
         }
         
         for(ng=sim.Models[nm].graphics.length-1;ng>=0;ng--){
@@ -133,21 +134,21 @@ function addVectors(model, graphics, material, range){
 function add_model_to_group(group, model){
     label = model.substr(0,1).toUpperCase()+model.substr(1)
     model_id = "graphics-model-"+model.toLowerCase()
-    $('#graphics-'+group.toLowerCase()).append('<div id="'+model_id+'" class="model-block">'+label+': </div>')
+    jq('#graphics-'+group.toLowerCase()).append('<div id="'+model_id+'" class="model-block">'+label+': </div>')
 }
 function add_visibility_button(model, graphics){
     classes = "toggle_visibility graphics_button"
     model_id = "#graphics-model-"+model.toLowerCase()
-    $(model_id).append('<span class="'+classes+'" sid="'+model+'" gid="'+graphics+'" >'+graphics+'</span>')
-    $(model_id+" > span:last").button({label: graphics});
-    $(model_id+" > span:last").click(function() {toggle_visibility(this)});
+    jq(model_id).append('<span class="'+classes+'" sid="'+model+'" gid="'+graphics+'" >'+graphics+'</span>')
+    jq(model_id+" > span:last").button({label: graphics});
+    jq(model_id+" > span:last").click(function() {toggle_visibility(this)});
 }
 
 function toggle_visibility(element){
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
     
-    sid = $(element).attr("sid")
-    gid = $(element).attr("gid")
+    sid = jq(element).attr("sid")
+    gid = jq(element).attr("gid")
     console.debug(sid+' '+gid)
     
     model = window.zinxProject.getModel(sid)
@@ -166,7 +167,6 @@ function toggle_visibility(element){
 function reload_model(model){
     
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-    alert('Reloading model')
     
 }
 function reload_models(){
