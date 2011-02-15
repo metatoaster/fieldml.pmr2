@@ -1,3 +1,4 @@
 recursive-include fieldml *
+recursive-include docs *
 global-exclude *pyc
 global-exclude .*swp

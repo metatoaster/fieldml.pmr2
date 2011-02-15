@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.2 - 2011-02-15
+----------------
+
+* Added a new annotation based on the JSON description file for Zinx.
+
 0.1 - 2010-06-21
 ----------------
 
