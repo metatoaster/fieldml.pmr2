@@ -2,6 +2,7 @@ MANIFEST.in
 README.txt
 setup.cfg
 setup.py
+docs/HISTORY.txt
 fieldml/__init__.py
 fieldml.pmr2.egg-info/PKG-INFO
 fieldml.pmr2.egg-info/SOURCES.txt
