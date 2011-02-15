@@ -22,6 +22,10 @@
   </script>
 
   <script type="text/javascript"
+      tal:attributes="src string:$portal_url/++resource++fieldml.pmr2.js/console.js">
+  </script>
+
+  <script type="text/javascript"
       tal:attributes="src string:$portal_url/++resource++fieldml.pmr2.js/zinx.js">
   </script>
 

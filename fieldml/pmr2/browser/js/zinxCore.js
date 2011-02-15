@@ -2366,12 +2366,3 @@ function parseIsoValues(def){
 	return isoValues;
 
 }
-
-// Indiscriminately override console.
-var console = {
-        log: function() { },
-        info: function() { },
-        debug: function() { },
-        warn: function() { },
-        error: function(msg) { }
-};
