@@ -29,7 +29,7 @@ function ZinxDownloadManager() {
 
     /** Loads the objects that have been added to the download manager. */
     this.load = function() {
-        for(i in this._objects){
+        for (var i = 0; i < this._objects.length; i++) {
             var object = this._objects[i];
             object.load(this._dm);
         }
@@ -39,7 +39,7 @@ function ZinxDownloadManager() {
     this._read = function(objects) {
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         
-        for(i in objects){
+        for (var i = 0; i < objects.length; i++) {
             var object = objects[i];
             console.debug("Rendering model "+object.id+" through download manager");
             object.render();
