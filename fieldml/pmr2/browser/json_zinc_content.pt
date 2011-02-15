@@ -1,0 +1,8 @@
+<div id="zinc">
+    <object id="zinc_plugin" type="application/x-zinc-plugin">
+      <param name="json" tal:attributes="value view/json"/>
+      To view this model, please install the
+      <a href="https://addons.mozilla.org/en-US/firefox/addon/5764">Zinc 
+      Add-on for Firefox</a>.
+    </object>
+</div>

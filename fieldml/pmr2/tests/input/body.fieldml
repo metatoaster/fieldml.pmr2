@@ -32,6 +32,20 @@
           </rdf:Bag>
         </pmr2:fields>
       </pmr2:annotation>
+      <pmr2:annotation rdf:parseType="Resource">
+        <pmr2:type 
+            rdf:resource="http://namespace.physiomeproject.org/pmr2/note#json_zinc_viewer"/>
+        <pmr2:fields>
+          <rdf:Bag>
+            <rdf:li rdf:parseType="Resource">
+              <pmr2:field rdf:parseType="Resource">
+                <pmr2:key>json</pmr2:key>
+                <pmr2:value>body.json</pmr2:value>
+              </pmr2:field>
+            </rdf:li>
+          </rdf:Bag>
+        </pmr2:fields>
+      </pmr2:annotation>
     </rdf:Description>
   </rdf:RDF>
 </fieldml>

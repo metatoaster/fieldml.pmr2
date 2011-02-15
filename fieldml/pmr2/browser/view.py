@@ -6,20 +6,28 @@ from pmr2.app.browser.exposure import ExposureFileViewBase
 from pmr2.app.browser.layout import PlainLayoutWrapper
 
 from fieldml.pmr2.browser.layout import ZincLayoutWrapper
+from fieldml.pmr2.browser.layout import JsonZincLayoutWrapper
 
 
-class ZincViewer(ExposureFileViewBase):
+class BaseZincViewer(ExposureFileViewBase):
     """\
-    Wraps an object around the Zinc viewer.
+    Base Zinc Viewer to provide a private helper to assist resolving
+    full path of files.
     """
-
-    template = ViewPageTemplateFile('zinc_content.pt')
 
     def _getPath(self, filename):
         uri = self.context.absolute_url()
         # take the "dirname" of the context and apply the path in place.
         path, id_ = uri.rsplit('/', 1)
         return '/'.join([path, filename])
+
+
+class ZincViewer(BaseZincViewer):
+    """\
+    Wraps an object around the Zinc viewer.
+    """
+
+    template = ViewPageTemplateFile('zinc_content.pt')
 
     @property
     def exnode(self):
@@ -30,6 +38,20 @@ class ZincViewer(ExposureFileViewBase):
         return self._getPath(self.note.exelem)
 
 ZincViewerView = layout.wrap_form(ZincViewer, __wrapper_class=ZincLayoutWrapper)
+
+
+class JsonZincViewer(BaseZincViewer):
+    """\
+    Wraps an object around the JSON Zinc viewer.
+    """
+
+    template = ViewPageTemplateFile('json_zinc_content.pt')
+
+    @property
+    def json(self):
+        return self._getPath(self.note.json)
+
+JsonZincViewerView = layout.wrap_form(JsonZincViewer, __wrapper_class=JsonZincLayoutWrapper)
 
 
 class FieldMLMetadata(ExposureFileViewBase):

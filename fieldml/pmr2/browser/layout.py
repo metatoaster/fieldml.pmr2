@@ -20,3 +20,17 @@ zinc_layout_factory = ZopeTwoFormTemplateFactory(
 
 class ZincLayoutWrapper(FormWrapper):
     zope.interface.implements(IZincLayoutWrapper)
+
+
+class IJsonZincLayoutWrapper(IFormWrapper):
+    """
+    The interface for the JsonZinc layout wrapper.
+    """
+
+
+json_zinc_layout_factory = ZopeTwoFormTemplateFactory(
+    path('json_zinc_layout.pt'), form=IJsonZincLayoutWrapper)
+
+
+class JsonZincLayoutWrapper(FormWrapper):
+    zope.interface.implements(IJsonZincLayoutWrapper)
