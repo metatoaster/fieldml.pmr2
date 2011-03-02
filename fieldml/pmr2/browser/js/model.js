@@ -19,6 +19,7 @@ function ZincReadyFunction(){ // when zinc is loaded/initialised, this function 
 function ZincSceneReadyFunction(){ // once the models are loaded and scene rendered, this function is called.
     //setTimeout('window.zinxProject.setTransparencyMode(\'order_independent\')', 500);
     //gfx('gfx define faces egroup model1');
+    setTimeout('window.zinxProject.Views[0].setView();', 10);
     setTimeout('window.zinxProject.Views[0].viewAll();', 10);
     return;
 }
@@ -70,17 +71,85 @@ function generateModels(){
         
         for(ng=sim.Models[nm].graphics.length-1;ng>=0;ng--){
             if(sim.Models[nm].graphics[ng].type=='points'){
-                model = addPoints(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material, sim.vrange)
+                var g = addPoints(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material, sim.vrange)
             }else if(sim.Models[nm].graphics[ng].type=='surface'){
-                model = addSurface(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material, sim.vrange)
+                var g = addSurface(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material,
+						sim.Models[nm].graphics[ng].xiFace, sim.vrange)
             }else if(sim.Models[nm].graphics[ng].type=='vectors'){
-                model = addVectors(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material, sim.crange)
+                var g = addVectors(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material, sim.crange)
+            }else if(sim.Models[nm].graphics[ng].type=='lines'){
+                var g = addLines(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material, sim.crange)
+            }else if(sim.Models[nm].graphics[ng].type=='elementPoints'){
+                var g = addElementPoints(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material, 
+						sim.Models[nm].graphics[ng].glyph, sim.Models[nm].graphics[ng].discretization, 
+						sim.Models[nm].graphics[ng].size, sim.Models[nm].graphics[ng].orientation,
+						sim.Models[nm].graphics[ng].scale, sim.crange)
             }
+				setMaterial(g, sim.Models[nm].graphics[ng].ambient, sim.Models[nm].graphics[ng].diffuse, 
+					sim.Models[nm].graphics[ng].emission, sim.Models[nm].graphics[ng].specular,
+					sim.Models[nm].graphics[ng].alpha, sim.Models[nm].graphics[ng].shininess);
         }      
     }
     
+	 if (sim.View)
+	 {
+		var view = window.zinxProject.addView();
+		setView(view, sim.View[0].camera, sim.View[0].target, sim.View[0].up, sim.View[0].angle);
+    }
     // Load models and create sceneViewer
-    window.zinxProject.loadModels();    
+    window.zinxProject.loadModels();
+}
+
+function setView(view, camera, target, up, angle){
+	if (camera)
+		view.camera = camera;
+	if (target)
+		view.target = target;
+	if (up)
+		view.up = up;
+	if (angle)
+		view.viewAngle = angle;
+}
+
+
+
+function setMaterial(g, ambient, diffuse, emission, specular, alpha, shininess){
+	if (alpha)
+		g.material.alpha= alpha;
+	if (ambient)
+	{
+		g.material.ambient.red = ambient[0];
+		g.material.ambient.green = ambient[1];
+		g.material.ambient.blue = ambient[2];
+	}
+	if (diffuse)
+	{
+		g.material.diffuse.red = diffuse[0];
+		g.material.diffuse.green = diffuse[1];
+		g.material.diffuse.blue = diffuse[2];
+	}
+	if (emission)
+	{
+		g.material.emission.red = emssion[0];
+		g.material.emission.green = emssion[1];
+		g.material.emission.blue = emssion[2];
+	}
+	if (specular)
+	{
+		g.material.specular.red = specular[0];
+		g.material.specular.green = specular[1];
+		g.material.specular.blue = specular[2];
+	}
+	if (shininess)
+	{
+   	g.material.shininess = shininess;
+	}
+	if (g.material)
+		g.material.load();
+  //  g.dataField = "potential";
+   // g.spectrum.minimumValue = range[0];
+   // g.spectrum.maximumValue = range[1];
+    //add_visibility_button(model.label, graphics.label)
 }
 
 function addPoints(model, graphics, material, range){
@@ -94,22 +163,62 @@ function addPoints(model, graphics, material, range){
    // g.spectrum.minimumValue = range[0];
    // g.spectrum.maximumValue = range[1];
     //add_visibility_button(model.label, graphics.label)
-    return model;
+    return g;
 }
 
-function addSurface(model, graphics, material, range){
+function addLines(model, graphics, material, range){
+    var g = model.addGraphic("Lines");
+    g.label = graphics.label
+  //  g.dataField = "potential";
+   // g.spectrum.minimumValue = range[0];
+   // g.spectrum.maximumValue = range[1];
+    //add_visibility_button(model.label, graphics.label)
+    return g;
+}
+
+function addSurface(model, graphics, material, xiFace, range){
     var g = model.addGraphic("Surfaces");
     g.label = graphics.label
     g.exterior = true;
     g.useDataField = false;
 	 if (material)
 		  g.material.clone(material);
+	 if (xiFace)
+	 {
+		 g.useXiFace = true;
+ 		 g.xiFace = xiFace;
+	 }
     //g.dataField = "potential";
     //g.spectrum.minimumValue = range[0];
     //g.spectrum.maximumValue = range[1];
     //add_visibility_button(model.label, graphics.label)
     //add_graphics_to_gui(model.group, model.label, graphics.label)
-    return model;
+    return g;
+}
+
+function addElementPoints(model, graphics, material, glyph, discretization,
+	size, orientation, scale, range){
+    var g = model.addGraphic("ElementPoints");
+    g.label = graphics.label
+    g.useDataField = false;
+	 if (material)
+		  g.material.clone(material);
+	 if (glyph)
+		  g.glyph = glyph;
+	 if (discretization)
+		  g._discretization = discretization;
+	 if (size)
+		  g._size = size;
+	 if (orientation)
+		  g.orientation = orientation;
+	 if (scale)
+		  g._scale = scale;
+
+  //  g.dataField = "potential";
+   // g.spectrum.minimumValue = range[0];
+   // g.spectrum.maximumValue = range[1];
+    //add_visibility_button(model.label, graphics.label)
+    return g;
 }
 
 function addVectors(model, graphics, material, range){

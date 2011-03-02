@@ -1366,7 +1366,8 @@ function ZinxSurface(parent) {
     this.label.replace('Graphics', 'Surfaces');
     this.graphicalElement = 'Surfaces'
     this.exterior = true;
-
+    this.useXiFace = false;
+    this.xiFace = 'xi1_0';
 }
 
 ZinxSurface.prototype.load = function() {
@@ -1387,6 +1388,9 @@ ZinxSurface.prototype.load = function() {
             if(field==null){field_id = this.dataField}
             else{field_id = field.id}
 			gfxCommand += " data "+field_id+" spectrum "+this.spectrum.id;
+		}
+		if(this.useXiFace && this.xiFace.length){
+			gfxCommand += " face " + this.xiFace;
 		}
 		gfx(gfxCommand);
 
@@ -1409,6 +1413,9 @@ ZinxSurface.prototype.update = function() {
             if(field==null){field_id = this.dataField}
             else{field_id = field.id}
 			gfxCommand += " data "+field_id+" spectrum "+this.spectrum.id;
+		}
+		if(this.useXiFace && this.xiFace.length){
+			gfxCommand += " face " + this.xiFace;
 		}
 		gfx(gfxCommand);
     }
@@ -1802,7 +1809,6 @@ ZinxView.prototype.setView = function() {
     window.sceneViewer.setLookatParametersNonSkew(cameraX, cameraY, cameraZ,
         targetX, targetY, targetZ, upX, upY, upZ);
     window.sceneViewer.viewAngle = viewAngle;
-
 }
     
 ZinxView.prototype.viewAll = function() {
