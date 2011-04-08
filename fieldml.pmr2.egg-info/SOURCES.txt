@@ -2,6 +2,7 @@ MANIFEST.in
 README.txt
 setup.cfg
 setup.py
+docs/HISTORY.txt
 fieldml/__init__.py
 fieldml.pmr2.egg-info/PKG-INFO
 fieldml.pmr2.egg-info/SOURCES.txt
@@ -29,6 +30,7 @@ fieldml/pmr2/browser/view.py
 fieldml/pmr2/browser/zinc_content.pt
 fieldml/pmr2/browser/zinc_layout.pt
 fieldml/pmr2/browser/css/zinc.css
+fieldml/pmr2/browser/js/console.js
 fieldml/pmr2/browser/js/model.js
 fieldml/pmr2/browser/js/zincInterface.js
 fieldml/pmr2/browser/js/zinx.js
