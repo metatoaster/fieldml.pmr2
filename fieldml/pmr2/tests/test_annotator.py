@@ -64,7 +64,7 @@ class TestZincViewerAnnotator(TestCase):
         pass
 
     def test_0000_zinc_viewer_basic(self):
-        annotator = ZincViewerAnnotator(self.context)
+        annotator = ZincViewerAnnotator(self.context, None)
         # must assign the name like how this would have generated via
         # adapter.
         annotator.__name__ = 'zinc_viewer'
@@ -76,7 +76,7 @@ class TestZincViewerAnnotator(TestCase):
         self.assertEqual(answer, results)
 
     def test_0010_json_zinc_viewer_basic(self):
-        annotator = JsonZincViewerAnnotator(self.context)
+        annotator = JsonZincViewerAnnotator(self.context, None)
         # must assign the name like how this would have generated via
         # adapter.
         annotator.__name__ = 'json_zinc_viewer'
@@ -87,7 +87,7 @@ class TestZincViewerAnnotator(TestCase):
         self.assertEqual(answer, results)
 
     def test_0100_metadata_basic(self):
-        annotator = FieldMLMetadataAnnotator(self.context)
+        annotator = FieldMLMetadataAnnotator(self.context, None)
         results = annotator.generate()
         answer = (
             ('title', u'Body Mesh'),
@@ -100,7 +100,7 @@ class TestZincViewerAnnotator(TestCase):
 
     def test_0101_metadata_multiple_creator(self):
         context = MockExposureObject('body2.fieldml')
-        annotator = FieldMLMetadataAnnotator(context)
+        annotator = FieldMLMetadataAnnotator(context, None)
         results = annotator.generate()
         answer = (
             ('title', u'Body Mesh'),
