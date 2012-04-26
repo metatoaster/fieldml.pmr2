@@ -2,6 +2,8 @@ import zope.component
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 from plone.z3cform import layout
 
+from Acquisition import aq_inner
+
 from pmr2.app.exposure.browser.browser import ExposureFileViewBase
 from pmr2.app.browser.layout import PlainLayoutWrapper
 
@@ -14,6 +16,18 @@ class BaseZincViewer(ExposureFileViewBase):
     Base Zinc Viewer to provide a private helper to assist resolving
     full path of files.
     """
+
+    @property
+    def js_root(self):
+        """
+        Return the root of the js library for fieldml.pmr2
+        """
+
+        context = aq_inner(self.context)
+        portal_state = zope.component.getMultiAdapter((context, self.request),
+            name=u'plone_portal_state')
+        portal_url = portal_state.portal_url()
+        return '/'.join((portal_url, '++resource++fieldml.pmr2.js'))
 
     def _getPath(self, filename):
         uri = self.context.absolute_url()

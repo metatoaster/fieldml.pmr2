@@ -26,11 +26,11 @@
   </script>
 
   <script type="text/javascript"
-      tal:attributes="src string:$portal_url/++resource++fieldml.pmr2.js/zinxCore.js">
+      tal:attributes="src string:$portal_url/++resource++fieldml.pmr2.js/zinx-0.6/zinxCore.js">
   </script>
 
   <script type="text/javascript"
-      tal:attributes="src string:$portal_url/++resource++fieldml.pmr2.js/zincInterface.js">
+      tal:attributes="src string:$portal_url/++resource++fieldml.pmr2.js/zinx-0.6/zincInterface.js">
   </script>
 
   <script type="text/javascript">
