@@ -26,11 +26,7 @@
   </script>
 
   <script type="text/javascript"
-      tal:attributes="src string:$portal_url/++resource++fieldml.pmr2.js/zinx-0.6/zinx.js">
-  </script>
-
-  <script type="text/javascript"
-      tal:attributes="src string:$portal_url/++resource++fieldml.pmr2.js/zinx-0.6/model.js">
+      tal:attributes="src string:$portal_url/++resource++fieldml.pmr2.js/zinxBootstrap.js">
   </script>
 
 </metal:slot>

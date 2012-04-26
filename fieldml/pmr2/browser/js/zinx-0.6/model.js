@@ -1,20 +1,6 @@
-jq(document).ready(function() {
-    
-    // Start New Zinx Project
-    window.zinxProject = new ZinxProject();
-    window.zinxProject.SceneObjectId = 'zinc_plugin'; // the html object you put the zinc scene in.
-    window.zinxProject.InitialiseZinc(); // Runs zinx.
-});
-
 // ==========================================================================================================
 // ==========================================================================================================
 // ==========================================================================================================
-
-function ZincReadyFunction(){ // when zinc is loaded/initialised, this function is run.
-    jsonfile = jq('#zinc_plugin param[name=json]')[0].value;
-    load_simulation(jsonfile);
-    return;
-}
 
 function ZincSceneReadyFunction(){ // once the models are loaded and scene rendered, this function is called.
     //setTimeout('window.zinxProject.setTransparencyMode(\'order_independent\')', 500);
