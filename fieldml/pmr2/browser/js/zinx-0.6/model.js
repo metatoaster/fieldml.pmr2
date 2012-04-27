@@ -1,5 +1,15 @@
-// ==========================================================================================================
-// ==========================================================================================================
+/*
+  Instantiate the Zinx project.  Call after the appropriate libraries
+  have been loaded.
+*/
+function InitialiseZinx() {
+  //window.zinxProject = new ZinxProject();
+  window.zinxProject = new ZinxProject();
+  window.zinxProject.SceneObjectId = 'zinc_plugin'; 
+  // Runs zinx; ZincReadyFunction will be called through here.
+  window.zinxProject.InitialiseZinc(); 
+}
+
 // ==========================================================================================================
 
 function ZincSceneReadyFunction(){ // once the models are loaded and scene rendered, this function is called.

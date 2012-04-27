@@ -27,7 +27,7 @@ function zinx_bootstrap() {
   var zincVersion = zinc_version();
   var zinxVersion = zincVersion;
 
-  console.log("bootstrap: detected zinc: " + zinxVersion);
+  console.log("bootstrap: detected zinc: " + zincVersion);
 
   if (zinxVersion != "0.6") {
     // Use the 0.7 version of the plugin
@@ -82,27 +82,15 @@ function waitFor(id, f, args) {
 
 function ZincReadyFunction() {
   jsonfile = jq('#zinc_plugin param[name=json]')[0].value;
-  //load_simulation(jsonfile);
+  // load_simulation(jsonfile);
   waitFor('load_simulation', 'load_simulation', [jsonfile]);
   return;
-}
-
-/*
-  Instantiate the Zinx project.  Call after the appropriate libraries
-  have been loaded.
-*/
-function zinx_initialize() {
-  //window.zinxProject = new ZinxProject();
-  window.zinxProject = new ZinxProject();
-  window.zinxProject.SceneObjectId = 'zinc_plugin'; 
-  // Runs zinx; ZincReadyFunction will be called through here.
-  window.zinxProject.InitialiseZinc(); 
 }
 
 jq(document).ready(function() {
   // As the parameters are within the object, we need to wait until the
   // entire page is loaded before this can be called.
   zinx_bootstrap();
-  waitFor('ZinxProject', 'zinx_initialize', []);
+  waitFor('InitialiseZinx', 'InitialiseZinx', []);
 });
 
