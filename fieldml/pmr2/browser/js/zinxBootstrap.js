@@ -91,6 +91,6 @@ jq(document).ready(function() {
   // As the parameters are within the object, we need to wait until the
   // entire page is loaded before this can be called.
   zinx_bootstrap();
-  waitFor('InitialiseZinx', 'InitialiseZinx', []);
+  waitFor('ZinxProject', 'InitialiseZinx', []);
 });
 

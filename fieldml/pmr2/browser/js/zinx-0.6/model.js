@@ -68,14 +68,16 @@ function generateModels(){
         for(ng=sim.Models[nm].graphics.length-1;ng>=0;ng--){
             if(sim.Models[nm].graphics[ng].type=='points'){
                 var g = addPoints(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material, sim.vrange)
-            }else if(sim.Models[nm].graphics[ng].type=='surface'){
+            }else if((sim.Models[nm].graphics[ng].type=='surface') ||
+                    sim.Models[nm].graphics[ng].type=='surfaces'){
                 var g = addSurface(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material,
 						sim.Models[nm].graphics[ng].xiFace, sim.vrange)
             }else if(sim.Models[nm].graphics[ng].type=='vectors'){
                 var g = addVectors(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material, sim.crange)
             }else if(sim.Models[nm].graphics[ng].type=='lines'){
                 var g = addLines(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material, sim.crange)
-            }else if(sim.Models[nm].graphics[ng].type=='elementPoints'){
+            }else if((sim.Models[nm].graphics[ng].type=='elementPoints') ||
+                    (sim.Models[nm].graphics[ng].type=='elementpoints')){
                 var g = addElementPoints(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material, 
 						sim.Models[nm].graphics[ng].glyph, sim.Models[nm].graphics[ng].discretization, 
 						sim.Models[nm].graphics[ng].size, sim.Models[nm].graphics[ng].orientation,
