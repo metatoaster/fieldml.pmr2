@@ -1,8 +1,3 @@
-
-// ==========================================================================================================
-// ==========================================================================================================
-// ==========================================================================================================
-
 function load_simulation(path){
     xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", path, true);
@@ -11,73 +6,118 @@ function load_simulation(path){
     xmlhttp.send(null);
 }
 
-function process_simulation(){
-    if (xmlhttp.readyState==4) {
-        window.simulation = JSON.parse(xmlhttp.responseText);
+function process_simulation() {
+    if (xmlhttp.readyState == 4) {
+        try {
+            simulation = JSON.parse(xmlhttp.responseText);
+        }
+        catch (e) {
+            console.error('bad json');
+            console.error(xmlhttp.responseText);
+            return false;
+        }
+        window.simulation = simulation;
         generateModels();
     }
 }
 
 function loadingCallback()
 {
-	return function()
-	{
-		viewAll();
-	}
+    return function()
+    {
+        viewAll();
+    }
 }
 
-function generateModels(){
+function generateModels() {
     sim = window.simulation;
     
     // Add groups to #accordian-graphics
-    for(i in sim.Groups){
+    for(i in sim.Groups) {
         $("#accordion-graphics").append('<h3><a href="#">'+sim.Groups[i]+' <span class="show_all graphics_button" >Show</span> <span class="hide_all graphics_button">Hide</span></a></h3>')
         $("#accordion-graphics").append('<div id="graphics-'+sim.Groups[i].toLowerCase()+'"></div>')
     }
-	//alert('base');
-    //base = $('base').attr('href').replace(/[^\/]*$/, '');
 
-    for(nm=0;nm<sim.Models.length;nm++){
+    for (nm=0; nm<sim.Models.length; nm++) {
         model = window.zinxProject.addModel();
         model.label = sim.Models[nm].label;
         model.elementDiscretization = sim.Models[nm].elementDiscretization;
         model.autoload = sim.Models[nm].load
         model.id = sim.Models[nm].region_name;
         add_model_to_group(sim.Models[nm].group, sim.Models[nm].label)
-        
-        for(nf=0;nf<sim.Models[nm].files.length;nf++){
-    //        model.addFile(sim.id+"/"+sim.Models[nm].files[nf]);
-				model.addFile(sim.Models[nm].files[nf]);
+
+        for (nf=0; nf<sim.Models[nm].files.length; nf++) {
+            // model.addFile(sim.id+"/"+sim.Models[nm].files[nf]);
+            model.addFile(sim.Models[nm].files[nf]);
         }
         
-        for(ng=sim.Models[nm].graphics.length-1;ng>=0;ng--){
-            if(sim.Models[nm].graphics[ng].type=='nodepoints'){
-                var g = addNodePoints(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material, sim.vrange)
-            }else if(sim.Models[nm].graphics[ng].type=='surfaces'){
-                var g = addSurface(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material,
-						sim.Models[nm].graphics[ng].xiFace, sim.vrange)
-            }else if(sim.Models[nm].graphics[ng].type=='vectors'){
-                var g = addVectors(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material, sim.crange)
-            }else if(sim.Models[nm].graphics[ng].type=='lines'){
-                var g = addLines(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material, sim.crange)
-            }else if(sim.Models[nm].graphics[ng].type=='elementpoints'){
-                var g = addElementPoints(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material, 
-						sim.Models[nm].graphics[ng].glyph, sim.Models[nm].graphics[ng].discretization, 
-						sim.Models[nm].graphics[ng].size, sim.Models[nm].graphics[ng].orientation,
-						sim.Models[nm].graphics[ng].scale, sim.crange)
+        for (ng = sim.Models[nm].graphics.length - 1; ng >= 0; ng--) {
+            gtype = sim.Models[nm].graphics[ng].type;
+            var g = null;
+            switch (gtype) {
+                case 'nodepoints':
+                    g = addNodePoints(model, sim.Models[nm].graphics[ng], 
+                                          sim.Models[nm].graphics[ng].material,
+                                          sim.vrange)
+                    break;
+                case 'surfaces':
+                case 'surface':  // 0.6
+                    g = addSurface(model, sim.Models[nm].graphics[ng], 
+                                       sim.Models[nm].graphics[ng].material,
+                                       sim.Models[nm].graphics[ng].xiFace, 
+                                       sim.vrange)
+                    break;
+                case 'vectors':
+                    g = addVectors(model, sim.Models[nm].graphics[ng],
+                                       sim.Models[nm].graphics[ng].material,
+                                       sim.crange)
+                    break;
+                case 'lines':
+                    g = addLines(model, sim.Models[nm].graphics[ng],
+                                     sim.Models[nm].graphics[ng].material,
+                                     sim.crange)
+                    break;
+                case 'elementpoints':
+                case 'elementPoints':  // 0.6
+                    g = addElementPoints(model,
+                        sim.Models[nm].graphics[ng],
+                        sim.Models[nm].graphics[ng].material,
+                        sim.Models[nm].graphics[ng].glyph,
+                        sim.Models[nm].graphics[ng].discretization,
+                        sim.Models[nm].graphics[ng].size,
+                        sim.Models[nm].graphics[ng].orientation,
+                        sim.Models[nm].graphics[ng].scale, sim.crange)
+                    break;
             }
-			setMaterial(g, sim.Models[nm].graphics[ng].ambient, sim.Models[nm].graphics[ng].diffuse, 
-				sim.Models[nm].graphics[ng].emission, sim.Models[nm].graphics[ng].specular,
-				sim.Models[nm].graphics[ng].alpha, sim.Models[nm].graphics[ng].shininess);
+            if (g == null) {
+                console.error('notimplemented: ' + 
+                    sim.Models[nm].graphics[ng].type);
+                console.error('nm: ' + nm);
+                console.error('ng: ' + ng);
+            }
+            else {
+                try {
+                    setMaterial(g, sim.Models[nm].graphics[ng].ambient,
+                                sim.Models[nm].graphics[ng].diffuse, 
+                                sim.Models[nm].graphics[ng].emission,
+                                sim.Models[nm].graphics[ng].specular,
+                                sim.Models[nm].graphics[ng].alpha,
+                                sim.Models[nm].graphics[ng].shininess);
+                }
+                catch (e) {
+                    console.error("can't set material");
+                    console.info(g);
+                }
+            }
         }      
     }
     
-	 if (sim.View)
-	 {
-		var view = window.zinxProject.addView();
-		setView(view, sim.View[0].camera, sim.View[0].target, sim.View[0].up, sim.View[0].angle);
-		console.log("here");
-		view.setView();
+    if (sim.View)
+    {
+        var view = window.zinxProject.addView();
+        setView(view, sim.View[0].camera, sim.View[0].target, sim.View[0].up,
+                sim.View[0].angle);
+        view.setView();
     }
     // Load models and create sceneViewer
     window.zinxProject.loadModels(loadingCallback());
