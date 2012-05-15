@@ -1,7 +1,16 @@
 Changelog
 =========
 
-0.4 - Released (2010-02-10)
+0.5 - Unreleased
+----------------
+
+* Zinc plugin version detection.
+* Dynamic Javascript import depending on detected conditions.
+* New version of zinx, which will support for Zinc 0.7.0.0 (and beyond).
+* Support for the older versions of Zinc (0.6.4.x) via the same dynamic
+  import.
+
+0.4 - Released (2012-02-10)
 ---------------------------
 
 * Compatability fix for pmr2.app-0.5 as annotator now requires request.
