@@ -3,7 +3,6 @@
       <param name="json" tal:attributes="value view/json"/>
       <param name="js_root" tal:attributes="value view/js_root"/>
       To view this model, please install the
-      <a href="https://addons.mozilla.org/en-US/firefox/addon/5764">Zinc 
-      Add-on for Firefox</a>.
+      <a href="http://www.cmiss.org/cmgui/zinc">ZINC browser plugin</a>.
     </object>
 </div>
