@@ -5,7 +5,6 @@ from zope.interface import implements
 from zope.component import provideAdapter
 from zope.interface.verify import verifyClass
 from zope.publisher.interfaces import IPublishTraverse
-from paste.httpexceptions import HTTPNotFound, HTTPFound
 
 from pmr2.testing.base import TestRequest
 
