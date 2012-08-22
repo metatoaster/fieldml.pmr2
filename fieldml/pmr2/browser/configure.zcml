@@ -9,21 +9,21 @@
   <browser:page
       for="pmr2.app.exposure.interfaces.IExposureFile"
       name="zinc_viewer"
-      class=".view.ZincViewerView"
+      class=".view.ZincViewer"
       permission="zope2.View"
       />
 
   <browser:page
       for="pmr2.app.exposure.interfaces.IExposureFile"
       name="json_zinc_viewer"
-      class=".view.JsonZincViewerView"
+      class=".view.JsonZincViewer"
       permission="zope2.View"
       />
 
   <browser:page
       for="pmr2.app.exposure.interfaces.IExposureFile"
       name="fieldml_metadata"
-      class=".view.FieldMLMetadataView"
+      class=".view.FieldMLMetadata"
       permission="zope2.View"
       />
 

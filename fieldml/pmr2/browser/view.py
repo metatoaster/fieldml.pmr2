@@ -51,8 +51,6 @@ class ZincViewer(BaseZincViewer):
     def exelem(self):
         return self._getPath(self.note.exelem)
 
-ZincViewerView = layout.wrap_form(ZincViewer, __wrapper_class=ZincLayoutWrapper)
-
 
 class JsonZincViewer(BaseZincViewer):
     """\
@@ -65,8 +63,6 @@ class JsonZincViewer(BaseZincViewer):
     def json(self):
         return self._getPath(self.note.json)
 
-JsonZincViewerView = layout.wrap_form(JsonZincViewer, __wrapper_class=JsonZincLayoutWrapper)
-
 
 class FieldMLMetadata(ExposureFileViewBase):
     """\
@@ -74,5 +70,3 @@ class FieldMLMetadata(ExposureFileViewBase):
     """
 
     template = ViewPageTemplateFile('fieldml_metadata.pt')
-
-FieldMLMetadataView = layout.wrap_form(FieldMLMetadata)
