@@ -1,14 +1,9 @@
 import zope.component
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
-from plone.z3cform import layout
 
 from Acquisition import aq_inner
 
 from pmr2.app.exposure.browser.browser import ExposureFileViewBase
-from pmr2.app.browser.layout import PlainLayoutWrapper
-
-from fieldml.pmr2.browser.layout import ZincLayoutWrapper
-from fieldml.pmr2.browser.layout import JsonZincLayoutWrapper
 
 
 class BaseZincViewer(ExposureFileViewBase):
