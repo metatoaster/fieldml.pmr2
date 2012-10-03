@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.6 - Released (2012-09-03)
+---------------------------
+
+* Removal of layouts, part of pmr2.app-0.6 compatibility fix.
+* Use zope.publisher exceptions and not repoze.
+
 0.5 - Released (2012-05-15)
 ---------------------------
 
