@@ -36,7 +36,7 @@ class ZincViewer(BaseZincViewer):
     Wraps an object around the Zinc viewer.
     """
 
-    template = ViewPageTemplateFile('zinc_content.pt')
+    index = ViewPageTemplateFile('zinc_content.pt')
 
     @property
     def exnode(self):
@@ -52,7 +52,7 @@ class JsonZincViewer(BaseZincViewer):
     Wraps an object around the JSON Zinc viewer.
     """
 
-    template = ViewPageTemplateFile('json_zinc_content.pt')
+    index = ViewPageTemplateFile('json_zinc_content.pt')
 
     @property
     def json(self):
