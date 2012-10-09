@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.6.1 - Released (2012-10-09)
+-----------------------------
+
+* Actually apply the changes that simplifies the usage of plone.z3cform 
+  to this package also.
+
 0.6 - Released (2012-10-03)
 ---------------------------
 
