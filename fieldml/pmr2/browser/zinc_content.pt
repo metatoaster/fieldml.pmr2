@@ -1,9 +1,68 @@
-<div id="zinc">
-    <object id="zinc_plugin" type="application/x-zinc-plugin">
-      <param name="exelem" tal:attributes="value view/exelem"/>
-      <param name="exnode" tal:attributes="value view/exnode"/>
-      To view this model, please install the
-      <a href="https://addons.mozilla.org/en-US/firefox/addon/5764">Zinc 
-      Add-on for Firefox</a>.
-    </object>
-</div>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/@@pmr2-macros/pmr2_main">
+
+<metal:slot metal:fill-slot="style_slot"
+    i18n:domain="pmr2.annotation.shjs">
+
+  <style type="text/css"
+      tal:content="string:@import url($portal_url/++resource++fieldml.pmr2.css/zinc.css);">
+  </style>
+
+</metal:slot>
+
+<metal:slot metal:fill-slot="javascript_head_slot" 
+    i18n:domain="fieldml.pmr2">
+
+  <script type="application/x-javascript" 
+      src="chrome://zinc/content/zinc.js">
+  </script>
+
+  <script type="text/javascript"
+      tal:attributes="src string:$portal_url/++resource++fieldml.pmr2.js/console.js">
+  </script>
+
+  <script type="text/javascript"
+      tal:attributes="src string:$portal_url/++resource++fieldml.pmr2.js/zinx-0.6/zinxCore.js">
+  </script>
+
+  <script type="text/javascript"
+      tal:attributes="src string:$portal_url/++resource++fieldml.pmr2.js/zinx-0.6/zincInterface.js">
+  </script>
+
+  <script type="text/javascript">
+  //<![CDATA[
+  function onZincReady() {
+      var fileNames = [ 
+          jq('#zinc_plugin param[name=exelem]')[0].value,
+          jq('#zinc_plugin param[name=exnode]')[0].value
+      ]
+      showModel(fileNames);
+
+  }
+  //]]>
+  </script>
+
+</metal:slot>
+
+<body>
+
+<metal:slot metal:fill-slot="main" i18n:domain="cmf_default">
+  <div id="layout-contents">
+    <h1>Zinc Viewer</h1>
+    <div id="zinc">
+        <object id="zinc_plugin" type="application/x-zinc-plugin">
+          <param name="exelem" tal:attributes="value view/exelem"/>
+          <param name="exnode" tal:attributes="value view/exnode"/>
+          To view this model, please install the
+          <a href="https://addons.mozilla.org/en-US/firefox/addon/5764">Zinc 
+          Add-on for Firefox</a>.
+        </object>
+    </div>
+  </div>
+</metal:slot>
+
+</body>
+</html>
