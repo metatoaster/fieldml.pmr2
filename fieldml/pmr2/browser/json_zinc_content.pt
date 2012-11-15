@@ -2,7 +2,7 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      metal:use-macro="context/@@pmr2-macros/pmr2_main">
+      metal:use-macro="context/@@pmr2-z3cform-macros/main">
 
 <metal:slot metal:fill-slot="style_slot"
     i18n:domain="pmr2.annotation.shjs">
