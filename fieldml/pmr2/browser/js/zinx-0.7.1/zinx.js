@@ -162,6 +162,7 @@ function ZinxModel(parent){
     this.discretization = 8;
     
     this.Files = [];
+    this.ExternalResources = [];
     this.Images = [];
     this.Fields = [];
     this.Graphics = [];
@@ -181,6 +182,23 @@ ZinxModel.prototype.addFile = function(path) {
         }
     }
     this.Files.push(file);
+    return file;
+
+}
+
+ZinxModel.prototype.addExternalResource = function(path) {
+	
+    var file = new ZinxFile(this);
+    if(path){
+        file.path = path;
+        var fileSplit = path.split("/");
+        file.filename = fileSplit.pop();
+        file.label = file.filename;
+        if(arguments.length==2){
+            file.index = arguments[1];
+        }
+    }
+    this.ExternalResources.push(file);
     return file;
 
 }
@@ -251,6 +269,11 @@ ZinxModel.prototype.load = function(dm) {
 			msg(2, 'Downloading file: '+this.project.path+file.path);
 			file.download_item = dm.addURI(this.project.path+file.path);
 		}
+		for(e in this.ExternalResources){
+			externalResources = this.ExternalResources[e];
+			msg(2, 'Downloading file: '+this.project.path+externalResources.path);
+			externalResources.download_item = dm.addURI(this.project.path+externalResources.path);
+		}
 		for(i in this.Images){
 			image = this.Images[i];
 			msg(2, 'Downloading image: '+this.project.path+image.path);
@@ -273,7 +296,6 @@ ZinxModel.prototype.render = function() {
         var subRegion = this.project.zincPlugin.context.getDefaultRegion();
         for(r in regions){
             if(regions[r].length>0){
-            	console.log(regions[r]);
                 var childRegion = subRegion.findSubregionAtPath(regions[r]);
                 if(childRegion){
                     subRegion = childRegion;
@@ -290,6 +312,12 @@ ZinxModel.prototype.render = function() {
     for(f in this.Files){
         streamInformation.createResourceDownloadItem(this.Files[f].download_item);
 	}
+	 for(e in this.ExternalResources){
+        var streamResource = streamInformation.createResourceDownloadItem(this.ExternalResources[e].download_item);
+		streamInformation.setResourceURI(streamResource, this.ExternalResources[e].path);
+		streamInformation.setResourceParse(streamResource, 0);
+	}
+	
     this.subRegion.read(streamInformation);
     
     if(this.Images.length>0){
