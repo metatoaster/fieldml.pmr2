@@ -12,38 +12,56 @@ function zinc_version() {
   var plugin = jq('#zinc_plugin')[0];
   var majorVersion = plugin.majorVersion;
   var minorVersion = plugin.minorVersion;
+  var updateVersion = plugin.updateVersion;
 
-  // Old Firefox only plugin.
+  // see if nsplugin version is installed.
   if (minorVersion == null) {
-    return "0.6";
+    try {
+      return zincVersion();
+    }
+    catch (e) {
+      // If the plugin is installed check whether symbols are missing,
+      // if we can figure this out for the user we can replace the 
+      // innerHTML with a message using this object:
+      // var plugin_cont = jq('#zinc')[0];
+    }
   }
 
-  return majorVersion + "." + minorVersion;
+  // Zinc<0.7.1 does not return updateVersion
+  if (updateVersion == null) {
+    return majorVersion + "." + minorVersion;
+  }
+
+  return majorVersion + "." + minorVersion + "." + updateVersion;
+}
+
+function zinc_to_zinx(zinc_version) {
+  // This simple mapping will suffice until a future updated version of
+  // Zinc-0.7 breaks something.
+  return zinc_version.substring(0, 3);
 }
 
 function zinx_bootstrap() {
-  var zinxLibKey = 'zinx-';
+  var zinxPrefix = 'zinx-';
   var jsRoot = jq('#zinc_plugin param[name=js_root]')[0].value;
   var zincVersion = zinc_version();
-  var zinxVersion = zincVersion;
+  var zinxVersion = zinc_to_zinx(zincVersion);
 
-  console.log("bootstrap: detected zinc: " + zincVersion);
-
-  if (zinxVersion != "0.6") {
-    // Use the 0.7 version of the plugin
-    zinxVersion = "0.7";
-  }
-
-  console.log("bootstrap: library version: " + zinxVersion);
-
-  var zinxRoot = jsRoot + '/' + zinxLibKey + zinxVersion + '/';
-
-  var js_index = {
+  // The files to import for the corresponding zinx version.
+  var zinx_filelist = {
     "0.6": ["zinx.js", "model.js"],
     "0.7": ["zinx.js", "zinxJSONparser.js", "models.js"]
   };
 
-  var index = js_index[zinxVersion];
+  // The mapping of the zinc plugin to the zinx version.
+
+  console.log("bootstrap: detected zinc: " + zincVersion);
+
+  console.log("bootstrap: using library version: " + zinxVersion);
+
+  var zinxRoot = jsRoot + '/' + zinxPrefix + zinxVersion + '/';
+
+  var index = zinx_filelist[zinxVersion];
 
   for (i in index) {
     var u = zinxRoot + index[i];
