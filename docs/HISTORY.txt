@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.7 - Unreleased
+----------------
+
+* Update macro dependency on the one provided by pmr2.z3cform instead of
+  pmr2.app.
+
 0.6.2 - Released (2012-11-16)
 -----------------------------
 
