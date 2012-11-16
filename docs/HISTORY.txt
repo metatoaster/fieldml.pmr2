@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.6.3 - Released (2012-11-16)
+-----------------------------
+
+* Include the complete merged changes due to a botched three-way merge
+  attempt.
+
 0.6.2 - Released (2012-11-16)
 -----------------------------
 
