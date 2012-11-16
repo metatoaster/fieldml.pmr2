@@ -16,6 +16,10 @@
 <metal:slot metal:fill-slot="javascript_head_slot" 
     i18n:domain="fieldml.pmr2">
 
+  <tal:comment tal:condition="nothing">
+    remove when 0.6 support gets in the way
+  </tal:comment>
+
   <script type="application/x-javascript" 
       src="chrome://zinc/content/zinc.js">
   </script>
