@@ -1,9 +1,9 @@
 function InitialiseZinx() {
     
     // Buttons
-    jq("#generateModel").click(function() { generateModel(); });
-    jq("#changeMaterial").click(function() { changeMaterial(); });
-    jq("#viewAll").click(function() { viewAll(); });
+    $("#generateModel").click(function() { generateModel(); });
+    $("#changeMaterial").click(function() { changeMaterial(); });
+    $("#viewAll").click(function() { viewAll(); });
     
     // Zinx
     window.zinxProject = new ZinxProject();

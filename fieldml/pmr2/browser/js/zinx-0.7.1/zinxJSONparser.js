@@ -51,42 +51,60 @@ function generateModels() {
             model.addFile(sim.Models[nm].files[nf]);
         }
         
+        if (sim.Models[nm].externalresources)
+        {
+        		for(ne=0;ne<sim.Models[nm].externalresources.length;ne++){
+    //        model.addExternalResources(sim.id+"/"+sim.Models[nm].externalresources[ne]);
+					model.addExternalResource(sim.Models[nm].externalresources[ne]);
+        		}
+        }
+
         for (ng = sim.Models[nm].graphics.length - 1; ng >= 0; ng--) {
             gtype = sim.Models[nm].graphics[ng].type;
             var g = null;
             switch (gtype) {
                 case 'nodepoints':
-                    g = addNodePoints(model, sim.Models[nm].graphics[ng], 
-                                          sim.Models[nm].graphics[ng].material,
-                                          sim.vrange)
+                    g = addNodePoints(model,
+                        sim.Models[nm].graphics[ng], 
+                        sim.Models[nm].graphics[ng].material,
+                        sim.Models[nm].graphics[ng].coordinatesField,
+                        sim.vrange)
                     break;
                 case 'surfaces':
                 case 'surface':  // 0.6
-                    g = addSurface(model, sim.Models[nm].graphics[ng], 
-                                       sim.Models[nm].graphics[ng].material,
-                                       sim.Models[nm].graphics[ng].xiFace, 
-                                       sim.vrange)
+                    g = addSurface(model,
+                        sim.Models[nm].graphics[ng], 
+                        sim.Models[nm].graphics[ng].material,
+                        sim.Models[nm].graphics[ng].coordinatesField,
+                        sim.Models[nm].graphics[ng].xiFace, 
+                        sim.vrange)
                     break;
                 case 'vectors':
-                    g = addVectors(model, sim.Models[nm].graphics[ng],
-                                       sim.Models[nm].graphics[ng].material,
-                                       sim.crange)
+                    g = addVectors(model,
+                        sim.Models[nm].graphics[ng],
+                        sim.Models[nm].graphics[ng].material,
+                        sim.Models[nm].graphics[ng].coordinatesField,
+                        sim.crange)
                     break;
                 case 'lines':
-                    g = addLines(model, sim.Models[nm].graphics[ng],
-                                     sim.Models[nm].graphics[ng].material,
-                                     sim.crange)
+                    g = addLines(
+                        model, sim.Models[nm].graphics[ng],
+                        sim.Models[nm].graphics[ng].material,
+                        sim.Models[nm].graphics[ng].coordinatesField,
+                        sim.crange)
                     break;
                 case 'elementpoints':
                 case 'elementPoints':  // 0.6
                     g = addElementPoints(model,
                         sim.Models[nm].graphics[ng],
                         sim.Models[nm].graphics[ng].material,
+                        sim.Models[nm].graphics[ng].coordinatesField,
                         sim.Models[nm].graphics[ng].glyph,
                         sim.Models[nm].graphics[ng].discretization,
                         sim.Models[nm].graphics[ng].size,
                         sim.Models[nm].graphics[ng].orientation,
-                        sim.Models[nm].graphics[ng].scale, sim.crange)
+                        sim.Models[nm].graphics[ng].scale,
+                        sim.crange)
                     break;
             }
             if (g == null) {
@@ -165,13 +183,15 @@ function setMaterial(g, ambient, diffuse, emission, specular, alpha, shininess){
     //add_visibility_button(model.label, graphics.label)
 }
 
-function addNodePoints(model, graphics, material, range){
+function addNodePoints(model, graphics, material, coordinatesField, range){
     var g = model.addGraphic("nodepoints");
     g.label = graphics.label
     g.size = 2;
     g.useDataField = false;
-	 if (material)
-		  g.material.clone(material);
+    if (coordinatesField)
+	g.coordinatesField = coordinatesField;
+    if (material)
+	g.material.clone(material);
   //  g.dataField = "potential";
    // g.spectrum.minimumValue = range[0];
    // g.spectrum.maximumValue = range[1];
@@ -179,9 +199,11 @@ function addNodePoints(model, graphics, material, range){
     return g;
 }
 
-function addLines(model, graphics, material, range){
+function addLines(model, graphics, material, coordinatesField, range){
     var g = model.addGraphic("lines");
     g.label = graphics.label
+    if (coordinatesField)
+	g.coordinatesField = coordinatesField;
   //  g.dataField = "potential";
    // g.spectrum.minimumValue = range[0];
    // g.spectrum.maximumValue = range[1];
@@ -189,11 +211,13 @@ function addLines(model, graphics, material, range){
     return g;
 }
 
-function addSurface(model, graphics, material, xiFace, range){
+function addSurface(model, graphics, material, coordinatesField, xiFace, range){
     var g = model.addGraphic("surfaces");
     g.label = graphics.label
     g.exterior = true;
     g.useDataField = false;
+    if (coordinatesField)
+	g.coordinatesField = coordinatesField;
 	 if (material)
 		  g.material.clone(material);
 	 if (xiFace)
@@ -209,11 +233,13 @@ function addSurface(model, graphics, material, xiFace, range){
     return g;
 }
 
-function addElementPoints(model, graphics, material, glyph, discretization,
+function addElementPoints(model, graphics, material, coordinatesField, glyph, discretization,
 	size, orientation, scale, range){
     var g = model.addGraphic("elementpoints");
     g.label = graphics.label
     g.useDataField = false;
+    if (coordinatesField)
+	g.coordinatesField = coordinatesField;
 	 if (material)
 		  g.material.clone(material);
 	 if (glyph)
@@ -237,7 +263,7 @@ function addElementPoints(model, graphics, material, glyph, discretization,
     return g;
 }
 
-function addVectors(model, graphics, material, range){
+function addVectors(model, graphics, material, coordinatesField, range){
 	
     var g = model.addGraphic("nodepoints");
     g.label = graphics.label
@@ -246,6 +272,8 @@ function addVectors(model, graphics, material, range){
     g.scale = [1e+06,3,3];
     g.orientation = "current";
     g.useDataField = false;
+    if (coordinatesField)
+	g.coordinatesField = coordinatesField;
 	 if (material)
 		  g.material.clone(material);
    // g.dataField = "current_magnitude";
