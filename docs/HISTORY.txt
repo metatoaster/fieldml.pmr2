@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.6.2 - Released (2012-11-16)
+-----------------------------
+
+* Include updated version of zinx to support Zinc-0.7.1
+
 0.6.1 - Released (2012-10-09)
 -----------------------------
 
