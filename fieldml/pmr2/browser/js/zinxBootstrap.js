@@ -17,7 +17,8 @@ function zinc_version() {
   // see if nsplugin version is installed.
   if (minorVersion == null) {
     try {
-      return zincVersion();
+      // assume we can truncate 0.6.x to just 0.6
+      return zincVersion()
     }
     catch (e) {
       // If the plugin is installed check whether symbols are missing,
@@ -29,42 +30,58 @@ function zinc_version() {
 
   // Zinc<0.7.1 does not return updateVersion
   if (updateVersion == null) {
-    return majorVersion + "." + minorVersion;
+    updateVersion = 0;
   }
 
-  return majorVersion + "." + minorVersion + "." + updateVersion;
+  return [majorVersion, minorVersion, updateVersion].join(".");
 }
 
-function zinc_to_zinx(zinc_version) {
-  // This simple mapping will suffice until a future updated version of
-  // Zinc-0.7 breaks something.
-  return zinc_version.substring(0, 3);
+function split_version(version) {
+  return version.split(".");
+}
+
+function zinx_version(version) {
+  var vs = split_version(version);
+  if ((vs[0] == '0') && (vs[1] < '7')) {
+    return '0.6'; // zinx provided for any zinc<0.7 (i.e 0.6.x).
+  }
+  if (vs[1] > '7') {
+    // maximum version supported.
+    vs = ['0', '7', '1'];
+  }
+  else {
+    if (vs[2] > '1') {
+      // maximum update version we support.
+      vs[2] = '1';
+    }
+  }
+  return vs.join(".");
 }
 
 function zinx_bootstrap() {
   var zinxPrefix = 'zinx-';
   var jsRoot = jq('#zinc_plugin param[name=js_root]')[0].value;
-  var zincVersion = zinc_version();
-  var zinxVersion = zinc_to_zinx(zincVersion);
+  var zincVer = zinc_version();
+  var zinxVer = zinx_version(zincVer);
 
-  // The files to import for the corresponding zinx version.
-  var zinx_filelist = {
-    "0.6": ["zinx.js", "model.js"],
-    "0.7": ["zinx.js", "zinxJSONparser.js", "models.js"]
-  };
+  // The files to import for the corresponding major zinx version.
+  var major_minor_files = {
+    "0": {
+      "6": ["zinx.js", "model.js"],
+      "7": ["zinx.js", "zinxJSONparser.js", "models.js"]
+    }
+  }
 
-  // The mapping of the zinc plugin to the zinx version.
+  console.log("bootstrap: detected zinc: " + zincVer);
+  console.log("bootstrap: using library version: " + zinxVer);
 
-  console.log("bootstrap: detected zinc: " + zincVersion);
+  var zinxRoot = jsRoot + '/' + zinxPrefix + zinxVer + '/';
 
-  console.log("bootstrap: using library version: " + zinxVersion);
+  var vs = split_version(zinxVer);
+  var file_list = major_minor_files[vs[0]][vs[1]];
 
-  var zinxRoot = jsRoot + '/' + zinxPrefix + zinxVersion + '/';
-
-  var index = zinx_filelist[zinxVersion];
-
-  for (i in index) {
-    var u = zinxRoot + index[i];
+  for (i in file_list) {
+    var u = zinxRoot + file_list[i];
     zinx_load(u);
     console.log("bootstrap: fetch " + u);
   }
