@@ -1,3 +1,8 @@
+
+// ==========================================================================================================
+// ==========================================================================================================
+// ==========================================================================================================
+
 function load_simulation(path){
     xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", path, true);
@@ -6,118 +11,81 @@ function load_simulation(path){
     xmlhttp.send(null);
 }
 
-function process_simulation() {
-    if (xmlhttp.readyState == 4) {
-        try {
-            simulation = JSON.parse(xmlhttp.responseText);
-        }
-        catch (e) {
-            console.error('bad json');
-            console.error(xmlhttp.responseText);
-            return false;
-        }
-        window.simulation = simulation;
+function process_simulation(){
+    if (xmlhttp.readyState==4) {
+        window.simulation = JSON.parse(xmlhttp.responseText);
         generateModels();
     }
 }
 
 function loadingCallback()
 {
-    return function()
-    {
-        viewAll();
-    }
+	return function()
+	{
+		viewAll();
+	}
 }
 
-function generateModels() {
+function generateModels(){
     sim = window.simulation;
     
     // Add groups to #accordian-graphics
-    for(i in sim.Groups) {
+    for(i in sim.Groups){
         $("#accordion-graphics").append('<h3><a href="#">'+sim.Groups[i]+' <span class="show_all graphics_button" >Show</span> <span class="hide_all graphics_button">Hide</span></a></h3>')
         $("#accordion-graphics").append('<div id="graphics-'+sim.Groups[i].toLowerCase()+'"></div>')
     }
+	//alert('base');
+    //base = $('base').attr('href').replace(/[^\/]*$/, '');
 
-    for (nm=0; nm<sim.Models.length; nm++) {
+    for(nm=0;nm<sim.Models.length;nm++){
         model = window.zinxProject.addModel();
         model.label = sim.Models[nm].label;
         model.elementDiscretization = sim.Models[nm].elementDiscretization;
         model.autoload = sim.Models[nm].load
         model.id = sim.Models[nm].region_name;
         add_model_to_group(sim.Models[nm].group, sim.Models[nm].label)
-
-        for (nf=0; nf<sim.Models[nm].files.length; nf++) {
-            // model.addFile(sim.id+"/"+sim.Models[nm].files[nf]);
-            model.addFile(sim.Models[nm].files[nf]);
+        
+        for(nf=0;nf<sim.Models[nm].files.length;nf++){
+    //        model.addFile(sim.id+"/"+sim.Models[nm].files[nf]);
+				model.addFile(sim.Models[nm].files[nf]);
         }
         
-        for (ng = sim.Models[nm].graphics.length - 1; ng >= 0; ng--) {
-            gtype = sim.Models[nm].graphics[ng].type;
-            var g = null;
-            switch (gtype) {
-                case 'nodepoints':
-                    g = addNodePoints(model, sim.Models[nm].graphics[ng], 
-                                          sim.Models[nm].graphics[ng].material,
-                                          sim.vrange)
-                    break;
-                case 'surfaces':
-                case 'surface':  // 0.6
-                    g = addSurface(model, sim.Models[nm].graphics[ng], 
-                                       sim.Models[nm].graphics[ng].material,
-                                       sim.Models[nm].graphics[ng].xiFace, 
-                                       sim.vrange)
-                    break;
-                case 'vectors':
-                    g = addVectors(model, sim.Models[nm].graphics[ng],
-                                       sim.Models[nm].graphics[ng].material,
-                                       sim.crange)
-                    break;
-                case 'lines':
-                    g = addLines(model, sim.Models[nm].graphics[ng],
-                                     sim.Models[nm].graphics[ng].material,
-                                     sim.crange)
-                    break;
-                case 'elementpoints':
-                case 'elementPoints':  // 0.6
-                    g = addElementPoints(model,
-                        sim.Models[nm].graphics[ng],
-                        sim.Models[nm].graphics[ng].material,
-                        sim.Models[nm].graphics[ng].glyph,
-                        sim.Models[nm].graphics[ng].discretization,
-                        sim.Models[nm].graphics[ng].size,
-                        sim.Models[nm].graphics[ng].orientation,
-                        sim.Models[nm].graphics[ng].scale, sim.crange)
-                    break;
+        if (sim.Models[nm].externalresources)
+        {
+        		for(ne=0;ne<sim.Models[nm].externalresources.length;ne++){
+    //        model.addExternalResources(sim.id+"/"+sim.Models[nm].externalresources[ne]);
+					model.addExternalResource(sim.Models[nm].externalresources[ne]);
+        		}
+        }
+        
+        for(ng=sim.Models[nm].graphics.length-1;ng>=0;ng--){
+            if(sim.Models[nm].graphics[ng].type=='nodepoints'){
+                var g = addNodePoints(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material, sim.Models[nm].graphics[ng].coordinatesField, sim.vrange)
+            }else if(sim.Models[nm].graphics[ng].type=='surfaces'){
+                var g = addSurface(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material, sim.Models[nm].graphics[ng].coordinatesField,
+						sim.Models[nm].graphics[ng].xiFace, sim.vrange)
+            }else if(sim.Models[nm].graphics[ng].type=='vectors'){
+                var g = addVectors(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material, sim.Models[nm].graphics[ng].coordinatesField, sim.crange)
+            }else if(sim.Models[nm].graphics[ng].type=='lines'){
+                var g = addLines(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material, sim.Models[nm].graphics[ng].coordinatesField, sim.crange)
+            }else if(sim.Models[nm].graphics[ng].type=='elementpoints'){
+                var g = addElementPoints(model, sim.Models[nm].graphics[ng], sim.Models[nm].graphics[ng].material, sim.Models[nm].graphics[ng].coordinatesField, 
+						sim.Models[nm].graphics[ng].glyph, sim.Models[nm].graphics[ng].discretization, 
+						sim.Models[nm].graphics[ng].size, sim.Models[nm].graphics[ng].orientation,
+						sim.Models[nm].graphics[ng].scale, sim.crange)
             }
-            if (g == null) {
-                console.error('notimplemented: ' + 
-                    sim.Models[nm].graphics[ng].type);
-                console.error('nm: ' + nm);
-                console.error('ng: ' + ng);
-            }
-            else {
-                try {
-                    setMaterial(g, sim.Models[nm].graphics[ng].ambient,
-                                sim.Models[nm].graphics[ng].diffuse, 
-                                sim.Models[nm].graphics[ng].emission,
-                                sim.Models[nm].graphics[ng].specular,
-                                sim.Models[nm].graphics[ng].alpha,
-                                sim.Models[nm].graphics[ng].shininess);
-                }
-                catch (e) {
-                    console.error("can't set material");
-                    console.info(g);
-                }
-            }
+			setMaterial(g, sim.Models[nm].graphics[ng].ambient, sim.Models[nm].graphics[ng].diffuse, 
+				sim.Models[nm].graphics[ng].emission, sim.Models[nm].graphics[ng].specular,
+				sim.Models[nm].graphics[ng].alpha, sim.Models[nm].graphics[ng].shininess);
         }      
     }
     
-    if (sim.View)
-    {
-        var view = window.zinxProject.addView();
-        setView(view, sim.View[0].camera, sim.View[0].target, sim.View[0].up,
-                sim.View[0].angle);
-        view.setView();
+	 if (sim.View)
+	 {
+		var view = window.zinxProject.addView();
+		setView(view, sim.View[0].camera, sim.View[0].target, sim.View[0].up, sim.View[0].angle);
+		console.log("here");
+		view.setView();
     }
     // Load models and create sceneViewer
     window.zinxProject.loadModels(loadingCallback());
@@ -165,13 +133,15 @@ function setMaterial(g, ambient, diffuse, emission, specular, alpha, shininess){
     //add_visibility_button(model.label, graphics.label)
 }
 
-function addNodePoints(model, graphics, material, range){
+function addNodePoints(model, graphics, material, coordinatesField, range){
     var g = model.addGraphic("nodepoints");
     g.label = graphics.label
     g.size = 2;
     g.useDataField = false;
-	 if (material)
-		  g.material.clone(material);
+    if (coordinatesField)
+	g.coordinatesField = coordinatesField;
+    if (material)
+	g.material.clone(material);
   //  g.dataField = "potential";
    // g.spectrum.minimumValue = range[0];
    // g.spectrum.maximumValue = range[1];
@@ -179,9 +149,11 @@ function addNodePoints(model, graphics, material, range){
     return g;
 }
 
-function addLines(model, graphics, material, range){
+function addLines(model, graphics, material, coordinatesField, range){
     var g = model.addGraphic("lines");
     g.label = graphics.label
+    if (coordinatesField)
+	g.coordinatesField = coordinatesField;
   //  g.dataField = "potential";
    // g.spectrum.minimumValue = range[0];
    // g.spectrum.maximumValue = range[1];
@@ -189,11 +161,13 @@ function addLines(model, graphics, material, range){
     return g;
 }
 
-function addSurface(model, graphics, material, xiFace, range){
+function addSurface(model, graphics, material, coordinatesField, xiFace, range){
     var g = model.addGraphic("surfaces");
     g.label = graphics.label
     g.exterior = true;
     g.useDataField = false;
+    if (coordinatesField)
+	g.coordinatesField = coordinatesField;
 	 if (material)
 		  g.material.clone(material);
 	 if (xiFace)
@@ -209,11 +183,13 @@ function addSurface(model, graphics, material, xiFace, range){
     return g;
 }
 
-function addElementPoints(model, graphics, material, glyph, discretization,
+function addElementPoints(model, graphics, material, coordinatesField, glyph, discretization,
 	size, orientation, scale, range){
     var g = model.addGraphic("elementpoints");
     g.label = graphics.label
     g.useDataField = false;
+    if (coordinatesField)
+	g.coordinatesField = coordinatesField;
 	 if (material)
 		  g.material.clone(material);
 	 if (glyph)
@@ -237,7 +213,7 @@ function addElementPoints(model, graphics, material, glyph, discretization,
     return g;
 }
 
-function addVectors(model, graphics, material, range){
+function addVectors(model, graphics, material, coordinatesField, range){
 	
     var g = model.addGraphic("nodepoints");
     g.label = graphics.label
@@ -246,6 +222,8 @@ function addVectors(model, graphics, material, range){
     g.scale = [1e+06,3,3];
     g.orientation = "current";
     g.useDataField = false;
+    if (coordinatesField)
+	g.coordinatesField = coordinatesField;
 	 if (material)
 		  g.material.clone(material);
    // g.dataField = "current_magnitude";
