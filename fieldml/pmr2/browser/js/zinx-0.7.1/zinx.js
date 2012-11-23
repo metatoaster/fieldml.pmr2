@@ -319,9 +319,10 @@ ZinxModel.prototype.render = function() {
 	}
 	
     this.subRegion.read(streamInformation);
+    var fieldModule = this.subRegion.getFieldModule();
+    fieldModule.defineAllFaces();
     
     if(this.Images.length>0){
-        var fieldModule = this.subRegion.getFieldModule();
         var xiField = fieldModule.findFieldByName("xi");
         this.imageField = fieldModule.createImage(xiField);
         this.imageField.setName("sunset"); // TODO: CHANGE TO this.id ************************
