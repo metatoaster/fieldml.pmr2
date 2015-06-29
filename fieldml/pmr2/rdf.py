@@ -35,7 +35,7 @@ class RdfExposureNoteHelper(RdfXmlMetadata):
         }
         """
 
-        result = self.query(q, bindings, self.namespaces).selected
+        result = [r for r in self.query(q, bindings, self.namespaces)]
         if result:
             # We only care about the first one.
             result = list(result[0])
@@ -51,7 +51,7 @@ class RdfExposureNoteHelper(RdfXmlMetadata):
             }
             ORDER BY ?li
             """
-            creators = self.query(q, bindings, self.namespaces).selected
+            creators = [r[0] for r in self.query(q, bindings, self.namespaces)]
             result[1] = ', '.join(
                 [i.strip() for i in creators if isinstance(i, rdflib.Literal)])
 
