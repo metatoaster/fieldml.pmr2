@@ -1,6 +1,27 @@
 import zope.interface
 import zope.schema
 
+from pmr2.app.workspace.schema import StorageFileChoice
+
+
+class ISettings(zope.interface.Interface):
+    """
+    Settings to be registered to the configuration registry.
+    """
+
+    zincjs_group_exporter = zope.schema.TextLine(
+        title=u'ZincJS Group Exporter Location',
+        description=u'The path to the exporter binary.',
+        default=u'zincjs_group_exporter',
+        required=False,
+    )
+
+
+class IZincJSUtility(zope.interface.Interface):
+    """
+    The marker interface for the ZincJS utility.
+    """
+
 
 class IZincViewerNote(zope.interface.Interface):
     """\
@@ -61,5 +82,19 @@ class IFieldMLMetadataNote(zope.interface.Interface):
     description = zope.schema.TextLine(
         title=u'Description',
         description=u'Description of the model.',
+        required=False,
+    )
+
+
+class IScaffoldDescription(zope.interface.Interface):
+    """
+    Scaffold description note.
+    """
+
+    view_json = StorageFileChoice(
+        title=u'Viewer JSON description',
+        description=u'The JSON file that contain the viewport description; '
+                     'a default configuration will be provided if omitted.',
+        vocabulary='pmr2.vocab.manifest',
         required=False,
     )

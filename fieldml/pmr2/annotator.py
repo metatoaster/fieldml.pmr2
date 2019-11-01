@@ -1,7 +1,10 @@
 import zope.interface
 import zope.component
 
+from os.path import join
+
 from pmr2.app.factory import named_factory
+from pmr2.app.settings.interfaces import IPMR2GlobalSettings
 from pmr2.app.annotation.interfaces import *
 from pmr2.app.annotation.annotator import ExposureFileAnnotatorBase
 
@@ -55,3 +58,22 @@ class FieldMLMetadataAnnotator(ExposureFileAnnotatorBase):
         return tuple(result)
 
 FieldMLMetadataAnnotatorFactory = named_factory(FieldMLMetadataAnnotator)
+
+
+class ScaffoldAnnotator(ExposureFileAnnotatorBase):
+    zope.interface.implements(IExposureFileAnnotator)
+    for_interface = IScaffoldDescription
+    title = u'Scaffold'
+    label = u'Scaffold Viewer'
+
+    def generate(self):
+        settings = zope.component.queryUtility(IPMR2GlobalSettings)
+        root = settings.dirOf(self.context)
+        scaffold_root = join(root, 'scaffold')
+        # TODO ensure root is created, and scaffold_root is removed
+        utility = zope.component.queryUtility(IZincJSUtility)
+        utility(root, self.input)
+        # call the utility
+        return ()
+
+ScaffoldAnnotatorFactory = named_factory(ScaffoldAnnotator)

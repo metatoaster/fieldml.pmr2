@@ -3,6 +3,7 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="pmr2">
 
+  <include file="profiles.zcml"/>
   <include package=".browser"/>
 
   <!-- Note storage -->
@@ -29,6 +30,11 @@
       />
 
   <!-- Note Generation -->
+
+  <utility
+      factory=".utility.ZincJSUtility"
+      provides="fieldml.pmr2.interfaces.IZincJSUtility"
+      />
 
   <utility
       name="zinc_viewer"

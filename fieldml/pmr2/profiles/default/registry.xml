@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<registry>
+  <records
+      interface="fieldml.pmr2.interfaces.ISettings"
+      prefix="fieldml.pmr2.settings"
+    />
+</registry>

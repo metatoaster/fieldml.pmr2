@@ -36,3 +36,12 @@ class FieldMLMetadataNote(ExposureFileNoteBase):
     title = fieldproperty.FieldProperty(IFieldMLMetadataNote['title'])
     creator = fieldproperty.FieldProperty(IFieldMLMetadataNote['creator'])
     description = fieldproperty.FieldProperty(IFieldMLMetadataNote['description'])
+
+
+class ScaffoldDescriptionNote(ExposureFileNoteBase):
+    """
+    Scaffold Description note.
+    """
+
+    zope.interface.implements(IScaffoldDescription)
+    view_json = fieldproperty.FieldProperty(IScaffoldDescription['view_json'])
