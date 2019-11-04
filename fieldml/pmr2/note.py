@@ -3,6 +3,7 @@ from zope.schema import fieldproperty
 
 from pmr2.app.interfaces import *
 from pmr2.app.annotation.note import ExposureFileNoteBase
+from pmr2.app.annotation.note import ExposureFileEditableNoteBase
 
 from interfaces import *
 
@@ -38,10 +39,10 @@ class FieldMLMetadataNote(ExposureFileNoteBase):
     description = fieldproperty.FieldProperty(IFieldMLMetadataNote['description'])
 
 
-class ScaffoldDescriptionNote(ExposureFileNoteBase):
+class ScaffoldDescriptionNote(ExposureFileEditableNoteBase):
     """
     Scaffold Description note.
     """
 
-    zope.interface.implements(IScaffoldDescription)
-    view_json = fieldproperty.FieldProperty(IScaffoldDescription['view_json'])
+    zope.interface.implements(IScaffoldDescriptionNote)
+    view_json = fieldproperty.FieldProperty(IScaffoldDescriptionNote['view_json'])

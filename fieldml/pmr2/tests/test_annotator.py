@@ -22,7 +22,7 @@ from fieldml.pmr2.interfaces import IZincJSUtility
 from fieldml.pmr2.annotator import ZincViewerAnnotator
 from fieldml.pmr2.annotator import JsonZincViewerAnnotator
 from fieldml.pmr2.annotator import FieldMLMetadataAnnotator
-from fieldml.pmr2.annotator import ScaffoldAnnotator
+from fieldml.pmr2.annotator import ScaffoldDescriptionAnnotator
 
 
 class MockWorkspace:
@@ -153,7 +153,7 @@ class TestScaffoldDescriptionAnnotator(TestCase):
 
     def test_scaffold_creation(self):
         target_dir = join(self.testdir, 'test.ex2.gz')
-        annotator = ScaffoldAnnotator(self.context, None)
+        annotator = ScaffoldDescriptionAnnotator(self.context, None)
         results = annotator.generate()
         self.assertEqual((), results)
         self.assertEqual(self.arguments[0][0], target_dir)

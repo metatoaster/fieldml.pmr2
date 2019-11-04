@@ -1,8 +1,15 @@
+from os.path import isfile
+from os.path import commonprefix
+from os.path import join
+from os.path import realpath
 import zope.component
+from zope.publisher.interfaces import NotFound
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 
 from Acquisition import aq_inner
 
+from pmr2.app.settings.interfaces import IPMR2GlobalSettings
+from pmr2.app.exposure.interfaces import IExposureSourceAdapter
 from pmr2.app.exposure.browser.browser import ExposureFileViewBase
 
 
@@ -65,3 +72,35 @@ class FieldMLMetadata(ExposureFileViewBase):
     """
 
     template = ViewPageTemplateFile('fieldml_metadata.pt')
+
+
+class ScaffoldViewer(ExposureFileViewBase):
+    """
+    The scaffold viewer
+    """
+
+    index = ViewPageTemplateFile('zincjs_scaffold_viewer.pt')
+
+    def render(self):
+        if not self.traverse_subpath:
+            return super(ScaffoldViewer, self).render()
+
+        if self.traverse_subpath == ['view.json'] and self.note.view_json:
+            # manually redirect
+            helper = zope.component.queryAdapter(
+                self.context, IExposureSourceAdapter)
+            exposure, workspace, path = helper.source()
+            target_uri = '%s/@@rawfile/%s/%s' % (
+                workspace.absolute_url(),
+                exposure.commit_id, self.note.view_json)
+            return self.request.response.redirect(target_uri)
+
+        settings = zope.component.getUtility(IPMR2GlobalSettings)
+        root = realpath(settings.dirOf(self.context))
+        target = realpath(join(root, *self.traverse_subpath))
+        if commonprefix([root, target]) != root:
+            raise NotFound(self.context, self.context.title_or_id())
+        if not isfile(target):
+            raise NotFound(self.context, self.context.title_or_id())
+        with open(target) as fd:
+            return fd.read()

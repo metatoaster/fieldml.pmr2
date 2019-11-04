@@ -29,6 +29,13 @@
       name="fieldml_metadata"
       />
 
+  <adapter
+      for="pmr2.app.exposure.interfaces.IExposureFile"
+      factory=".ScaffoldDescriptionNoteFactory"
+      provides="fieldml.pmr2.interfaces.IScaffoldDescriptionNote"
+      name="scaffold_viewer"
+      />
+
   <!-- Note Generation -->
 
   <utility
@@ -51,6 +58,12 @@
   <utility
       name="fieldml_metadata"
       component=".annotator.FieldMLMetadataAnnotatorFactory"
+      provides="pmr2.app.annotation.interfaces.IExposureFileAnnotator"
+      />
+
+  <utility
+      name="scaffold_viewer"
+      component=".annotator.ScaffoldDescriptionAnnotatorFactory"
       provides="pmr2.app.annotation.interfaces.IExposureFileAnnotator"
       />
 

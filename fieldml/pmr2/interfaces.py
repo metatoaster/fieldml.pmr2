@@ -86,7 +86,7 @@ class IFieldMLMetadataNote(zope.interface.Interface):
     )
 
 
-class IScaffoldDescription(zope.interface.Interface):
+class IScaffoldDescriptionNote(zope.interface.Interface):
     """
     Scaffold description note.
     """

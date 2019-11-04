@@ -1,7 +1,11 @@
 import zope.interface
 import zope.component
 
+from os import makedirs
+from os.path import exists
+from os.path import isdir
 from os.path import join
+from shutil import rmtree
 
 from pmr2.app.factory import named_factory
 from pmr2.app.settings.interfaces import IPMR2GlobalSettings
@@ -60,20 +64,27 @@ class FieldMLMetadataAnnotator(ExposureFileAnnotatorBase):
 FieldMLMetadataAnnotatorFactory = named_factory(FieldMLMetadataAnnotator)
 
 
-class ScaffoldAnnotator(ExposureFileAnnotatorBase):
-    zope.interface.implements(IExposureFileAnnotator)
-    for_interface = IScaffoldDescription
+class ScaffoldDescriptionAnnotator(ExposureFileAnnotatorBase):
+    zope.interface.implements(
+        IExposureFileAnnotator, IExposureFilePostEditAnnotator)
+    for_interface = IScaffoldDescriptionNote
     title = u'Scaffold'
     label = u'Scaffold Viewer'
+    edited_names = ('view_json',)
 
     def generate(self):
         settings = zope.component.queryUtility(IPMR2GlobalSettings)
         root = settings.dirOf(self.context)
         scaffold_root = join(root, 'scaffold')
+        if not isdir(root):
+            makedirs(root)
+        if exists(scaffold_root):
+            rmtree(scaffold_root)
+
         # TODO ensure root is created, and scaffold_root is removed
         utility = zope.component.queryUtility(IZincJSUtility)
         utility(root, self.input)
         # call the utility
         return ()
 
-ScaffoldAnnotatorFactory = named_factory(ScaffoldAnnotator)
+ScaffoldDescriptionAnnotatorFactory = named_factory(ScaffoldDescriptionAnnotator)

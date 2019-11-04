@@ -11,11 +11,16 @@ from os import listdir
 from shutil import rmtree
 
 import zope.component
+from zope.publisher.interfaces import NotFound
 from plone.registry.interfaces import IRegistry
 from Products.CMFCore.utils import getToolByName
 
+from pmr2.app.settings.interfaces import IPMR2GlobalSettings
+from pmr2.app.workspace.content import Workspace
+from pmr2.app.workspace.interfaces import IStorageUtility
 from pmr2.app.exposure.interfaces import IExposureFile
 from pmr2.app.exposure.content import ExposureFile
+from pmr2.app.exposure.content import Exposure
 from pmr2.app.exposure.browser import util
 
 from pmr2.app.annotation import note_factory
@@ -29,12 +34,17 @@ from fieldml.pmr2.interfaces import IZincJSUtility
 from fieldml.pmr2.interfaces import ISettings
 from fieldml.pmr2.utility import ZincJSUtility
 from fieldml.pmr2.testing import layer
+from fieldml.pmr2.browser.view import ScaffoldViewer
+
+
+with gzip_open(join(dirname(__file__), 'input', 'test.ex2.gz')) as fd:
+    test_exfile_content = fd.read()
 
 
 class UtilsTestCase(unittest.TestCase):
 
-    # Just using the integration layer for now until I figure out how to
-    # split this off in cleaner ways.
+    # Just using the integration layer for now until a way to set up and
+    # test with just the FIXTURE is done.
     layer = layer.FIELDML_UTILITY_INTEGRATION_LAYER
 
     def setUp(self):
@@ -85,10 +95,67 @@ class UtilsTestCase(unittest.TestCase):
         settings.zincjs_group_exporter = os.environ[
             'ZINCJS_GROUP_EXPORTER_BIN'].decode('utf8')
 
-        fd = gzip_open(join(dirname(__file__), 'input', 'test.ex2.gz'))
-        utility(self.testdir, fd.read())
-        fd.close()
+        utility(self.testdir, test_exfile_content)
 
         scaffolddir = join(self.testdir, 'scaffold')
         self.assertTrue(isdir(scaffolddir))
         self.assertEqual(19, len(listdir(scaffolddir)))
+
+    @unittest.skipIf(
+        'ZINCJS_GROUP_EXPORTER_BIN' not in os.environ,
+        'define ZINCJS_GROUP_EXPORTER_BIN environment variable to run full '
+        'integration test')
+    def test_zincjs_scaffold_view(self):
+        oid = 'scaffold'
+        fid = 'test.ex2'
+        pmr2_settings = zope.component.getUtility(IPMR2GlobalSettings)
+        pmr2_settings.repo_root = self.testdir
+
+        registry = zope.component.getUtility(IRegistry)
+        utility = zope.component.queryUtility(IZincJSUtility)
+        settings = registry.forInterface(
+            ISettings, prefix='fieldml.pmr2.settings')
+        settings.zincjs_group_exporter = os.environ[
+            'ZINCJS_GROUP_EXPORTER_BIN'].decode('utf8')
+
+        su = zope.component.getUtility(IStorageUtility, name='dummy_storage')
+        su._dummy_storage_data[oid] = [{
+            fid: test_exfile_content,
+        }]
+
+        w = Workspace(oid)
+        w.storage = 'dummy_storage'
+        self.portal.workspace[oid] = w
+
+        exposure = Exposure(oid)
+        exposure.commit_id = u'0'
+        exposure.workspace = u'/plone/workspace/%s' % oid
+
+        self.portal.exposure[oid] = exposure
+        self.portal.exposure[oid][fid] = ExposureFile(fid)
+
+        context = self.portal.exposure[oid][fid]
+        request = TestRequest()
+        annotator = zope.component.getUtility(IExposureFileAnnotator,
+            name='scaffold_viewer')(context, request)
+        annotator(data=())
+
+        out_root = join(self.testdir, 'plone', 'exposure', oid, fid)
+        self.assertTrue(isdir(out_root))
+
+        # TODO try a test with testbrowser
+        request = self.layer['portal'].REQUEST
+        view = ScaffoldViewer(context, request)
+        base_render = view()
+        self.assertIn('MAPcorePortalArea', base_render)
+
+        view.publishTraverse(request, 'scaffold')
+
+        with self.assertRaises(NotFound):
+            view()
+
+        view.publishTraverse(request, '0')
+        root_json = view()
+
+        with open(join(out_root, 'scaffold', '0')) as fd:
+            self.assertEqual(fd.read(), root_json)

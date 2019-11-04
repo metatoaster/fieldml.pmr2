@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/@@pmr2-z3cform-macros/main">
+
+<metal:slot metal:fill-slot="style_slot"
+    i18n:domain="pmr2.annotation.shjs">
+
+  <style type="text/css"
+      tal:content="string:@import url($portal_url/++resource++fieldml.pmr2.css/zinc.css);">
+  </style>
+
+</metal:slot>
+
+<metal:slot metal:fill-slot="javascript_head_slot" 
+    i18n:domain="fieldml.pmr2">
+
+  <script type="text/javascript"
+      tal:attributes="src string:$portal_url/++resource++fieldml.pmr2.js/zincjs_group_exporter_bundle.js">
+  </script>
+
+</metal:slot>
+
+<body>
+
+<metal:slot metal:fill-slot="main" i18n:domain="cmf_default">
+  <div id="layout-contents">
+    <h1>Scaffold Viewer</h1>
+    <div id="MAPcorePortalArea" tal:attributes="
+        data-model string:${view/url_expr}/scaffold/0;
+        data-view string:${view/url_expr}/view.json;
+    ">
+    </div>
+  </div>
+</metal:slot>
+
+</body>
+</html>
