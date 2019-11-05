@@ -2,6 +2,7 @@ import unittest
 import logging
 import os
 from StringIO import StringIO
+from json import loads
 from gzip import open as gzip_open
 from tempfile import mkdtemp
 from os.path import dirname
@@ -156,6 +157,73 @@ class UtilsTestCase(unittest.TestCase):
 
         view.publishTraverse(request, '0')
         root_json = view()
-
         with open(join(out_root, 'scaffold', '0')) as fd:
-            self.assertEqual(fd.read(), root_json)
+            contents = fd.read()
+            self.assertEqual(contents, root_json)
+            self.assertTrue(isinstance(loads(root_json), list))
+
+        # destroy that file and recreate
+        with open(join(out_root, 'scaffold', '0'), 'w') as fd:
+            fd.write('???')
+
+        # this should break the view
+        with self.assertRaises(ValueError):
+            loads(view())
+
+        request = TestRequest()
+        annotator = zope.component.getUtility(IExposureFileAnnotator,
+            name='scaffold_viewer')(context, request)
+        annotator(data=())
+
+        root_json = view()
+        with open(join(out_root, 'scaffold', '0')) as fd:
+            contents = fd.read()
+            self.assertEqual(contents, root_json)
+            self.assertTrue(isinstance(loads(root_json), list))
+
+    def test_zincjs_scaffold_view(self):
+        oid = 'scaffold'
+        fid = 'test.ex2'
+        pmr2_settings = zope.component.getUtility(IPMR2GlobalSettings)
+        pmr2_settings.repo_root = self.testdir
+
+        su = zope.component.getUtility(IStorageUtility, name='dummy_storage')
+        su._dummy_storage_data[oid] = [{
+            fid: test_exfile_content,
+            'view.json': '{}',
+        }]
+
+        w = Workspace(oid)
+        w.storage = 'dummy_storage'
+        self.portal.workspace[oid] = w
+        exposure = Exposure(oid)
+        exposure.commit_id = u'0'
+        exposure.workspace = u'/plone/workspace/%s' % oid
+        self.portal.exposure[oid] = exposure
+        self.portal.exposure[oid][fid] = ExposureFile(fid)
+
+        context = self.portal.exposure[oid][fid]
+        request = TestRequest()
+        annotator = zope.component.getUtility(IExposureFileAnnotator,
+            name='scaffold_viewer')(context, request)
+        annotator(data=())
+
+        # TODO try a test with testbrowser
+        request = self.layer['portal'].REQUEST
+        view = ScaffoldViewer(context, request)
+        # since this was not adapted through the standard flow, this
+        # need to be manually set
+        view.__name__ = 'scaffold_viewer'
+        base_render = view()
+        self.assertIn('MAPcorePortalArea', base_render)
+
+        # when note.view_json is not defined
+        view.publishTraverse(request, 'view.json')
+        self.assertEqual(view(), view.default_view_json)
+
+        # when the view_json is set.
+        annotator(data=(('view_json', 'view.json'),))
+        self.assertEqual(
+            'http://nohost/plone/workspace/scaffold/@@rawfile/0/view.json',
+            view(),
+        )

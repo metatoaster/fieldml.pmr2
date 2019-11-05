@@ -2,6 +2,7 @@ from os.path import isfile
 from os.path import commonprefix
 from os.path import join
 from os.path import realpath
+from json import dumps
 import zope.component
 from zope.publisher.interfaces import NotFound
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
@@ -80,12 +81,27 @@ class ScaffoldViewer(ExposureFileViewBase):
     """
 
     index = ViewPageTemplateFile('zincjs_scaffold_viewer.pt')
+    default_view_json = dumps({
+        "farPlane": 6.356104522334282,
+        "nearPlane": 0.1333,
+        "upVector": [
+            0.6389172435557343, 0.2829491995105483, 0.7153492198803961
+        ],
+        "targetPosition": [
+            0.05471361591632292, 0.12015277677143191, -0.39547867728129676
+        ],
+        "eyePosition": [
+            -1.8366826545742034, -0.8914857814544176, 0.9499518864185601
+        ]
+    })
 
     def render(self):
         if not self.traverse_subpath:
             return super(ScaffoldViewer, self).render()
 
-        if self.traverse_subpath == ['view.json'] and self.note.view_json:
+        if self.traverse_subpath == ['view.json']:
+            if not self.note.view_json:
+                return self.default_view_json
             # manually redirect
             helper = zope.component.queryAdapter(
                 self.context, IExposureSourceAdapter)
