@@ -1,3 +1,4 @@
+import os
 from subprocess import Popen, PIPE
 from logging import getLogger
 from distutils.spawn import find_executable
@@ -37,5 +38,8 @@ class ZincJSUtility(object):
             )
             return
 
-        p = Popen([executable, root], stdin=PIPE)
+        # restrict env to just the bare minimum, i.e. don't let things
+        # like PYTHONPATH (if set) to interfere with the calling.
+        env = {k: os.environ[k] for k in ('PATH',)}
+        p = Popen([executable, root], stdin=PIPE, env=env)
         p.communicate(model_data)
