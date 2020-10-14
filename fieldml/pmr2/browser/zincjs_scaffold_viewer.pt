@@ -20,17 +20,24 @@
       tal:attributes="src string:$portal_url/++resource++fieldml.pmr2.js/zincjs_group_exporter_bundle.js">
   </script>
 
+  <script type="text/javascript"
+      tal:attributes="src string:$portal_url/++resource++fieldml.pmr2.js/zincjs_pmr2_helper.js">
+  </script>
+
 </metal:slot>
 
 <body>
 
 <metal:slot metal:fill-slot="main" i18n:domain="cmf_default">
   <div id="layout-contents">
+    <div class="pmr2_zincjs_wrapper">
+    <div class="pmr2_zincjs_control"><i class="icon-resize-full"></i> (toggle viewer size)</div>
     <h1>Scaffold Viewer</h1>
     <div id="MAPcorePortalArea" tal:attributes="
         data-model string:${view/url_expr}/scaffold/0;
         data-view string:${view/url_expr}/view.json;
     ">
+    </div>
     </div>
   </div>
 </metal:slot>

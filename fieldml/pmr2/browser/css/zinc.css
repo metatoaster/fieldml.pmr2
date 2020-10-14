@@ -7,3 +7,34 @@
     width: 100%;
     height: 600px;
 }
+
+#MAPcorePortalArea {
+    height: 100%;
+}
+
+.pmr2_zincjs_wrapper {
+    height: 600px;
+}
+
+.pmr2_zincjs_wrapper .pmr2_zincjs_control {
+    float: right;
+}
+
+.pmr2_zincjs_wrapper #timeSliderContainer {
+    display: none;
+}
+
+.pmr2_zincjs_wrapper.maximized {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    height: auto;
+    margin: auto;
+    padding: 1em;
+}
+
+.pmr2_zincjs_wrapper.maximized #MAPcorePortalArea {
+    height: 95%;
+}
